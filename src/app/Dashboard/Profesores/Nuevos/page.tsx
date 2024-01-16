@@ -19,20 +19,36 @@ const PersonalDataForm = () => {
         salary_type: string;
     };
 
-    const [paymentMethods, setPaymentMethods] = useState([]);
-    const [salaryType, setSalaryType] = useState([]);
+    interface PaymentMethodType {
+        id: string;
+        descr: string;
+    }
+
+    interface SalaryType {
+        id: string;
+        descr: string;
+    }
+
+    const [paymentMethods, setPaymentMethods] = useState<PaymentMethodType[]>([]);
+    const [salaryType, setSalaryType] = useState<SalaryType[]>([]);
 
     useEffect(() => {
         fetch('/api/payment_method')
             .then(response => response.json())
-            .then(data => setPaymentMethods(data))
+            .then(data => {
+                console.log('Payment methods data:', data.payment_method);
+                setPaymentMethods(data.payment_method);
+            })
             .catch(error => console.error('Error:', error));
     }, []);
 
     useEffect(() => {
         fetch('/api/salary_type')
           .then(response => response.json())
-          .then(data => setSalaryType(data))
+          .then(data => {
+            console.log('Salary type data:', data.salary_type);
+            setSalaryType(data.salary_type);
+        })
           .catch(error => console.error('Error:', error));
       }, []);
 
@@ -149,19 +165,19 @@ const PersonalDataForm = () => {
                         Medio de Pago:
                         <select value={payment_method} onChange={(e) => setselectedPay(e.target.value)} className='text-slate-950'>
                             <option value="">Seleccione un medio de pago</option>
-                            {paymentMethods.payment_method ? paymentMethods.payment_method.map((method : any) => (
+                            {paymentMethods.map((method: PaymentMethodType) => (
                                 <option key={method.descr} value={method.id}>{method.descr}</option>
-                            )) : null}
+                            ))}
                         </select>
                     </label>
                     <br />
                     <label>
-                        Tipo de "contrato":
+                        Tipo de &quot;contrato&quot;:
                         <select value={salary_type} onChange={(e) => setMethod(e.target.value)} className='text-slate-950'>
                             <option value="">Seleccione el tipo de salario</option>
-                            {salaryType.salary_type ? salaryType.salary_type.map((Salary: any) => (
-                                <option key={Salary.descr} value={Salary.id}>{Salary.descr}</option>
-                            )) : null}
+                            {salaryType.map((salary_type: SalaryType) => (
+                                <option key={salary_type.descr} value={salary_type.id}>{salary_type.descr}</option>
+                            ))}
                         </select>
                     </label>
                     <br />

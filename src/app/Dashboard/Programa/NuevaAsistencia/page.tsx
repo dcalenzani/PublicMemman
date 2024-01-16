@@ -4,6 +4,10 @@ import Table from '@/app/components/Table';
 import React, { useState, useEffect } from 'react';
 
 const AsistenciaForm = () => {
+    type AttendanceForm = {
+        lesson_id: string;
+        student_id: string;
+    };
     
     type Id = {
         id: string;
@@ -29,8 +33,11 @@ const AsistenciaForm = () => {
     const [student_id, setStudent] = useState('');
     const [students, setStudents] = useState({members: []});
     const [lessons, setLessons] = useState({lessons: []});
-    const [attendanceForm, setAttendanceForm] = useState([]);
-
+    const [attendanceForm, setAttendanceForm] = useState<AttendanceForm>({
+        lesson_id: '',
+        student_id: '',
+    });
+    
     useEffect(() => {
         fetch('http://localhost:3000/api/users?roles_id=1')
             .then(response => response.json())
@@ -93,31 +100,31 @@ const AsistenciaForm = () => {
             <div className='flex-col flex my-32 mx-4'>
                 <h1 className='mb-3'>Registro de clases</h1>
                     {lessons.lessons.map((lesson: any) => (
-                <form onSubmit={handleSubmit} className='flex flex-col space-y-2 space-x-1 my-8 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-700 [&>input]:text-slate-950'>
+                <form key={lesson.id} onSubmit={handleSubmit} className='flex flex-col space-y-2 space-x-1 my-8 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-700 [&>input]:text-slate-950'>
                     <label>
-                        <input type="text" value={lesson.id} className='text-slate-950' readOnly />
+                        <input type="text" key={lesson.id} value={lesson.id} className='text-slate-950' readOnly />
                     </label>
                     <br />
                     <label>
-                        <input type="text" value={lesson.lesson_date} className='text-slate-950' readOnly /> Fecha
+                        <input type="text" key={lesson.lesson_date} value={lesson.lesson_date} className='text-slate-950' readOnly /> Fecha
                     </label>
                     <br />
                     <label>
-                        <input type="text" value={lesson.teacher} className='text-slate-950' readOnly /> Profesor
+                        <input type="text" value={lesson.teacher} key={lesson.teacher} className='text-slate-950' readOnly /> Profesor
                     </label>
                     <label>
-                        <input type="text" value={lesson.lesson_time} className='text-slate-950' readOnly /> Hora
+                        <input type="text" key={lesson.lesson_time} value={lesson.lesson_time} className='text-slate-950' readOnly /> Hora
                     </label>
                     <br />
                     <label>
-                        <input type="text" value={lesson.duration} className='text-slate-950' readOnly /> Duracion
+                        <input type="text" key={lesson.duration} value={lesson.duration} className='text-slate-950' readOnly /> Duracion
                     </label>
                     <br />
                     <label>
                         <select value={student_id} onChange={(e) => setStudent(e.target.value)} className='text-slate-950'>
                             <option value="">Seleccione un estudiante</option>
                             {students.members.map((student: any) => (
-                                <option key={student.nombre} value={student.dni}>{student.nombre}</option>
+                                <option key={student.dni} value={student.dni}>{student.nombre}</option>
                             ))} 
                         </select>Alumnos
                     </label>

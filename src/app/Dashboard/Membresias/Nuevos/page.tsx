@@ -118,7 +118,7 @@ const PersonalDataForm = () => {
         }
 
         if (isOver18 && dialogOver.current) {
-            dialogOver.current.showModal();
+            (dialogOver.current as HTMLDialogElement).showModal();
         }
     };
 

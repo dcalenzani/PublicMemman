@@ -19,3 +19,5 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
+
+/* http://localhost:3000/api/lessons/new?teacher_id=743333333&lesson_date=2024-01-19+15%3A30&duration= */

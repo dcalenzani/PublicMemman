@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Hamburguer from '@/app/components/HamburguerMenu';
 
-const lessonFormForm = () => {
+const LessonFormForm = () => {
 
     type LessonForm = {
         teacher_id: string;
@@ -10,12 +10,19 @@ const lessonFormForm = () => {
         duration: string;
     };
 
-    const [Teachers, setTeachers] = useState([]);
+    interface TeachersType {
+        teachers: Array<{
+          dni: string;
+          nombre: string;
+        }>;
+      }
+
+    const [Teachers, setTeachers] = useState<any[]> ([]);
 
     useEffect(() => {
         fetch('http://localhost:3000/api/teacher')
             .then(response => response.json())
-            .then(data => setTeachers(data))
+            .then((data: TeachersType) => setTeachers(data.teachers))
             .catch(error => console.error('Error:', error));
     }, []);
 
@@ -41,23 +48,26 @@ const lessonFormForm = () => {
 
         setLessonForm(lessonForm);
 
-        const fillUserUrlParams = (lessonForm: any) => {
-            const urlLessonParams = new URLSearchParams(lessonForm).toString();
-            return urlLessonParams;
-        };
+        const fillUserUrlParams = async (lessonForm: LessonForm) => {
+            const urlLessonParams = new URLSearchParams();
+            for (const key in lessonForm) {
+                urlLessonParams.append(key, lessonForm[key as keyof LessonForm]);
+            }
+            try {
+                const urlParams = urlLessonParams.toString();
+                const userResponse = await fetch(`/api/lessons/new?${urlParams}`);
+                console.log(userResponse);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+            /* window.location.href = './Nuevos/End'; */
+        };  
+        await fillUserUrlParams(lessonForm);
 
-        try {
-            const urlLessonParams = fillUserUrlParams(lessonForm);
-            const userResponse = await fetch(`/api/lessons/new?${urlLessonParams}`);
-            console.log(userResponse);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-        
-        /* window.location.href = './Nuevos/End'; */
     };
-
+        
     console.log(lessonForm);
+    console.log(Teachers);
 
     return (
         <div>
@@ -79,9 +89,9 @@ const lessonFormForm = () => {
                     Profesor:
                     <select value={Teacherid} onChange={(e) => setTeacherId(e.target.value)} className='text-slate-950'>
                         <option value="">Seleccione un profesor</option>
-                        {Teachers.teachers ? Teachers.teachers.map((teacher: any) => (
-                            <option key={teacher.dni} value={teacher.dni}>{teacher.nombre}</option>
-                        )) : null}
+                        {Array.isArray(Teachers) && Teachers.map((teachers: any) => (
+                            <option key={teachers.dni} value={teachers.dni}>{teachers.nombre}</option>
+                        ))}
                     </select>
                 </label>
                 <br />
@@ -116,5 +126,4 @@ const lessonFormForm = () => {
         </div>
     );
 };
-
-export default lessonFormForm;
+export default LessonFormForm;

@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS salary_type (
 /*Gym Management*/
 CREATE TABLE IF NOT EXISTS worker (
     id SERIAL PRIMARY KEY,
-    users_id INTEGER REFERENCES users(id) NOT NULL UNIQUE ON DELETE CASCADE,
+    users_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     roles_id INTEGER REFERENCES roles(id) NOT NULL,
     payment_method INTEGER REFERENCES payment_method(id),
     salary_type INTEGER REFERENCES salary_type(id) NOT NULL,
@@ -72,13 +72,12 @@ CREATE TABLE IF NOT EXISTS worker (
 
 CREATE TABLE IF NOT EXISTS membership (
     id SERIAL PRIMARY KEY,
-    users_id INTEGER REFERENCES users(id) NOT NULL ON DELETE CASCADE,
-    product_id INTEGER REFERENCES product(id) NOT NULL,
+    users_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     entry_date DATE NOT NULL,
-    end_date DATE NOT NULL
+    end_date DATE
 );
 
-CREATE TABLE IF NOT EXISTS lesson(
+CREATE TABLE IF NOT EXISTS lesson (
     id SERIAL PRIMARY KEY,
     teacher_id INTEGER REFERENCES worker(users_id),
     lesson_date TIMESTAMP NOT NULL,
@@ -87,8 +86,35 @@ CREATE TABLE IF NOT EXISTS lesson(
 
 CREATE TABLE IF NOT EXISTS student_attendance (
     id SERIAL PRIMARY KEY,
-    lesson_id INTEGER REFERENCES lesson(id) NOT NULL ON DELETE CASCADE,
-    student_id INTEGER REFERENCES users(id) NOT NULL ON DELETE CASCADE,
+    lesson_id INTEGER REFERENCES lesson(id) ON DELETE CASCADE,
+    student_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     attendance BOOLEAN DEFAULT NULL,
     justification VARCHAR(255)
 );
+
+CREATE OR REPLACE FUNCTION set_end_date() RETURNS TRIGGER AS $$
+BEGIN
+    NEW.end_date := NEW.entry_date + INTERVAL '1 month';
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_end_date_before_insert
+BEFORE INSERT ON membership
+FOR EACH ROW
+EXECUTE FUNCTION set_end_date();
+
+CREATE OR REPLACE FUNCTION add_membership() RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.roles_id IN (1, 2) THEN
+        INSERT INTO climbing_gym.membership (users_id, entry_date, end_date)
+        VALUES (NEW.id, CURRENT_DATE, CURRENT_DATE + INTERVAL '1 month');
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER add_membership_after_insert
+AFTER INSERT ON climbing_gym.users
+FOR EACH ROW
+EXECUTE FUNCTION add_membership();

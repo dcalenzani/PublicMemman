@@ -16,7 +16,7 @@ INSERT INTO worker (users_id, roles_id, payment_method, salary_type, bio) VALUES
 
 INSERT INTO worker (users_id, roles_id, payment_method, salary_type, bio) VALUES (55555555, 4, 1, 2, 'bio_test_2');
 
-INSERT INTO membership (users_id, product_id, entry_date, end_date) VALUES (33333333, 1, '2020-01-01', '2020-02-01');
+INSERT INTO membership (users_id, entry_date, end_date) VALUES (33333333);
 
 INSERT INTO lesson (teacher_id, lesson_date, duration) 
 VALUES 

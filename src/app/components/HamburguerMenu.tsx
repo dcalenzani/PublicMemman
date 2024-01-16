@@ -3,7 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
+interface HamburguerProps {
+    children: React.ReactNode
+}
 const Hamburguer: React.FC<HamburguerProps> = ({ children }) => {
+
     const isMdScreen = useMediaQuery({ query: '(min-width: 768px)' });
     const [isMenuOpen, setMenuOpen] = useState(false); // default to closed menu
 
@@ -43,7 +47,7 @@ const Hamburguer: React.FC<HamburguerProps> = ({ children }) => {
             </div>
 
             {isMenuOpen && (
-                <div className="fixed z-50 flex flex-col bg-zinc-900 w-screen justify-between items-center  text-center text-xl md:flex-row md:space-x-10 md:top-[-12px] [&>a:hover]:bg-zinc-400 [&>a]:w-[150%] [&>a]:p-8">
+                <div className="fixed z-50 flex flex-col top-0 bg-zinc-900 w-screen justify-between items-center  text-center text-xl md:flex-row md:space-x-10 md:top-[-12px] [&>a:hover]:bg-zinc-400 [&>a]:w-[150%] [&>a]:p-8">
                     {children}
                 </div>
             )}

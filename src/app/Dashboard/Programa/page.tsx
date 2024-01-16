@@ -12,9 +12,21 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 
 const Programa: React.FC = () => {
+
+    interface RowDataType {
+        id: string;
+        nombre: string;
+        duracion: string;
+        profesor: string;
+    }
+
+    interface RowData {
+        id: string;
+    }
+
     const today = new Date();
     const [value, onChange] = useState<Value>(today);
-    const [selectedRowData, setSelectedRowData] = useState(null);
+    const [selectedRowData, setSelectedRowData] = useState<RowData | null>(null);
     const formattedDate = value instanceof Date ? value.toISOString().split('T')[0] : '';
 
     return (
@@ -45,7 +57,7 @@ const Programa: React.FC = () => {
                 className='text-zinc-200'
                 endpoint={`http://localhost:3000/api/lessons?date=${formattedDate}`}
                 dataKey='lessons'
-                onRowClick={(rowData) => setSelectedRowData(rowData)}/>
+                onRowClick={(rowData: RowDataType | { [key: string]: any; }) => setSelectedRowData(rowData as RowDataType)}/>
 
                 <div className='flex flex-row space-x-4'>
                     <a href="./Programa/NuevaClase" className='bg-yellow-300 text-slate-950 p-3 rounded-md'>Nueva Clase</a>

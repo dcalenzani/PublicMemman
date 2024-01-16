@@ -15,3 +15,18 @@ DELETE FROM climbing_gym.users WHERE fullname = 'Jane Doe';
 INSERT INTO climbing_gym.users (id, fullname, email, phone, pass, birth_date, roles_id) 
       VALUES (
        2, 'Jane Doe', 'dcalenzani95@gmail,com', 999999999, 1, '1990-01-01', 2);
+
+SELECT 
+    users.id as id,
+    fullname as nombre,
+    email,
+    phone as Tel,
+    birth_date as Nac, 
+    membership.entry_date as Ingreso,
+    membership.end_date as Vencimiento,
+    FROM climbing_gym.users
+    INNER JOIN climbing_gym.membership ON membership.users_id = users.id
+    WHERE roles_id = 1
+
+INSERT INTO climbing_gym.membership (users_id, entry_date)
+    VALUES (1, CURRENT_DATE);
