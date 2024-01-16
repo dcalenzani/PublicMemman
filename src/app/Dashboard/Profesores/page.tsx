@@ -11,7 +11,7 @@ const MembersPage: React.FC = () => {
                 <div>
                     <h1 className='text-3xl bg-zinc-800 p-3'>Profesores</h1>
                     <div className='container-box'>
-                        <Table endpoint='http://localhost:3000/api/users?roles_id=4' dataKey='members'/>
+                        <Table endpoint='/api/users?roles_id=4' dataKey='members'/>
                     </div>
                 </div>
 

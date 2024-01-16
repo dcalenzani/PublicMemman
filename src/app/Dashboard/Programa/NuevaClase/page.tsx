@@ -20,7 +20,7 @@ const LessonFormForm = () => {
     const [Teachers, setTeachers] = useState<any[]> ([]);
 
     useEffect(() => {
-        fetch('http://localhost:3000/api/teacher')
+        fetch('/api/teacher')
             .then(response => response.json())
             .then((data: TeachersType) => setTeachers(data.teachers))
             .catch(error => console.error('Error:', error));

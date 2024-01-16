@@ -55,7 +55,7 @@ const Programa: React.FC = () => {
                 
                 <ClickableTable
                 className='text-zinc-200'
-                endpoint={`http://localhost:3000/api/lessons?date=${formattedDate}`}
+                endpoint={`/api/lessons?date=${formattedDate}`}
                 dataKey='lessons'
                 onRowClick={(rowData: RowDataType | { [key: string]: any; }) => setSelectedRowData(rowData as RowDataType)}/>
 

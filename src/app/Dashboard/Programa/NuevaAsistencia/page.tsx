@@ -17,7 +17,7 @@ const AsistenciaForm = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const idParam = urlParams.get('id');
         if (idParam) {
-            fetch('http://localhost:3000/api/lessons?id=' + idParam)
+            fetch('/api/lessons?id=' + idParam)
             .then(response => response.json())
             .then(data => {
                 setLessons(data);
@@ -39,7 +39,7 @@ const AsistenciaForm = () => {
     });
     
     useEffect(() => {
-        fetch('http://localhost:3000/api/users?roles_id=1')
+        fetch('/api/users?roles_id=1')
             .then(response => response.json())
             .then(data => setStudents(data))
             .catch(error => console.error('Error:', error));
@@ -132,7 +132,7 @@ const AsistenciaForm = () => {
                     <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-md'>Submit</button>
                 </form>
                 ))}
-                <Table endpoint={`http://localhost:3000/api/lessons/attendance?lesson_id=${id}`} 
+                <Table endpoint={`/api/lessons/attendance?lesson_id=${id}`} 
                 dataKey="attendee"
                 />
             </div>
