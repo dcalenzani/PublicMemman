@@ -18,6 +18,7 @@ const Programa: React.FC = () => {
         nombre: string;
         duracion: string;
         profesor: string;
+        alumnos: string;
     }
 
     interface RowData {

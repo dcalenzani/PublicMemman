@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS worker (
 
 CREATE TABLE IF NOT EXISTS membership (
     id SERIAL PRIMARY KEY,
-    users_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    users_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     entry_date DATE NOT NULL,
     end_date DATE
 );

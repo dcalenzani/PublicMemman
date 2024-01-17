@@ -12,28 +12,36 @@ export async function GET(request: Request) {
     if (date) {
       lessons = await sql`
       SELECT 
-      lesson.id as id,
-      lesson.lesson_date::TIME as hora, 
-      TO_CHAR(lesson.duration, 'HH24:MI') AS duracion,
-      users.fullname AS Profesor
+        lesson.id as id,
+        lesson.lesson_date::TIME as hora, 
+        TO_CHAR(lesson.duration, 'HH24:MI') AS duracion,
+        users.fullname AS Profesor,
+        COUNT(DISTINCT student_attendance.student_id) AS Alumnos
       FROM 
-          climbing_gym.lesson
+        climbing_gym.lesson
       INNER JOIN 
-          climbing_gym.worker ON lesson.teacher_id = worker.users_id
+        climbing_gym.worker ON lesson.teacher_id = worker.users_id
       INNER JOIN 
-      climbing_gym.users ON worker.users_id = users.id
-      WHERE lesson.lesson_date::DATE = ${date};
+        climbing_gym.users ON worker.users_id = users.id
+      LEFT JOIN
+        climbing_gym.student_attendance ON lesson.id = student_attendance.lesson_id
+      WHERE lesson.lesson_date::DATE = ${date}
+      GROUP BY
+        lesson.id,
+        hora,
+        duracion,
+        Profesor;
       `;
     } else if (timestamp) { 
       lessons = await sql`
       SELECT 
-      lesson.id as id,
-      lesson.lesson_date::TIME as lesson_time, 
-      lesson.lesson_date::DATE as lesson_date,
-      TO_CHAR(lesson.duration, 'HH24:MI') AS duration,
-      users.fullname AS Profesor
+        lesson.id as id,
+        lesson.lesson_date::TIME as lesson_time, 
+        lesson.lesson_date::DATE as lesson_date,
+        TO_CHAR(lesson.duration, 'HH24:MI') AS duration,
+        users.fullname AS Profesor
       FROM 
-          climbing_gym.lesson
+        climbing_gym.lesson
       INNER JOIN 
           climbing_gym.worker ON lesson.teacher_id = worker.users_id
       INNER JOIN 
