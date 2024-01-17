@@ -11,14 +11,16 @@ CREATE TABLE IF NOT EXISTS roles (
 );
 
 CREATE TABLE IF NOT EXISTS users(
-    id INTEGER UNIQUE PRIMARY KEY NOT NULL,
+    serial SERIAL,
+    id INTEGER UNIQUE NOT NULL,
     email VARCHAR(255) CHECK (birth_date <= current_date - interval '18 years' OR email IS NOT NULL) NOT NULL,
     phone INTEGER CHECK (birth_date <= current_date - interval '18 years' OR phone IS NOT NULL) NOT NULL,
     pass VARCHAR(255) NOT NULL,
     fullname VARCHAR(255) NOT NULL,
     birth_date DATE NOT NULL,
     entry_date DATE DEFAULT CURRENT_DATE NOT NULL,
-    roles_id INTEGER REFERENCES roles(id)
+    roles_id INTEGER REFERENCES roles(id),
+    PRIMARY KEY (serial, id)
 );
 
 CREATE TABLE IF NOT EXISTS children (
@@ -73,7 +75,7 @@ CREATE TABLE IF NOT EXISTS worker (
 CREATE TABLE IF NOT EXISTS membership (
     id SERIAL PRIMARY KEY,
     users_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
-    entry_date DATE NOT NULL,
+    entry_date DATE,
     end_date DATE
 );
 
@@ -92,6 +94,7 @@ CREATE TABLE IF NOT EXISTS student_attendance (
     justification VARCHAR(255)
 );
 
+/*Triggers (WORK IN PROGRESS)
 CREATE OR REPLACE FUNCTION set_end_date() RETURNS TRIGGER AS $$
 BEGIN
     NEW.end_date := NEW.entry_date + INTERVAL '1 month';
@@ -118,3 +121,4 @@ CREATE TRIGGER add_membership_after_insert
 AFTER INSERT ON climbing_gym.users
 FOR EACH ROW
 EXECUTE FUNCTION add_membership();
+*/

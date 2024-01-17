@@ -23,9 +23,10 @@ const MembersPage: React.FC = () => {
                 <div className=''>
                     <div className='flex flex-row justify-between'>
                         <h1 className='text-3xl bg-zinc-800 p-3'>Membresias</h1>
+                        <a href={selectedRowData ? `/Dashboard/Membresias/Actualizar?users_id=${(selectedRowData.dni)}` : '#'} className='bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Actualizar Miembro</a>
                     </div>
                     <div className="container-box">
-                        <Table endpoint='/api/users/memberships?roles_id=2' dataKey='members'
+                        <ClickableTable endpoint='/api/users/memberships?roles_id=2' dataKey='members'
                         onRowClick={(rowData: RowDataType | { [key: string]: any; }) => setSelectedRowData(rowData as RowDataType)}/>
                     </div>
                 </div>
@@ -42,6 +43,7 @@ const MembersPage: React.FC = () => {
                 <div className='flex flex-row'>
                     <a href='./Membresias/Nuevos' className=' bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Nuevo ingreso</a>
                     <a href='./Membresias/NuevosMan' className=' bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Ingreso rápido</a>
+                    <a href='./Membresias/Actualizar' className=' bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Actualizar seleccion</a>
                 </div>
 
             </div>

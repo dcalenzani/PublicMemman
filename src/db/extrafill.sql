@@ -16,12 +16,14 @@ INSERT INTO worker (users_id, roles_id, payment_method, salary_type, bio) VALUES
 
 INSERT INTO worker (users_id, roles_id, payment_method, salary_type, bio) VALUES (55555555, 4, 1, 2, 'bio_test_2');
 
-INSERT INTO membership (users_id, entry_date, end_date) VALUES (33333333);
+INSERT INTO membership (users_id, entry_date) VALUES (33333333, '2024-01-01');
+
+INSERT INTO membership (users_id, entry_date) VALUES (22222222, '2024-01-01');
 
 INSERT INTO lesson (teacher_id, lesson_date, duration) 
 VALUES 
-    (44444444, '2024-01-07 10:00:00',  '1 hour 30 minutes'),
-    (55555555, '2024-01-05 17:30:00', '1 hour')
+    (44444444, '2024-01-17 10:00:00',  '1 hour 30 minutes'),
+    (55555555, '2024-01-25 17:30:00', '1 hour')
 ;
 
 INSERT INTO student_attendance (student_id, lesson_id) VALUES
