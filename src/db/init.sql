@@ -4,25 +4,58 @@ CREATE SCHEMA climbing_gym;
 
 SET search_path TO climbing_gym;
 
-/*Tables for people*/
+/*Main entities*/
 CREATE TABLE IF NOT EXISTS roles (
     id SERIAL PRIMARY KEY,
     descr VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS product (
+    id SERIAL PRIMARY KEY,
+    descr VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS non_membership_product (
+    id SERIAL PRIMARY KEY,
+    descr VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS payment_method (
+    id SERIAL PRIMARY KEY,
+    descr VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS users(
-    serial SERIAL,
     id INTEGER UNIQUE NOT NULL,
     email VARCHAR(255) CHECK (birth_date <= current_date - interval '18 years' OR email IS NOT NULL) NOT NULL,
-    phone INTEGER CHECK (birth_date <= current_date - interval '18 years' OR phone IS NOT NULL) NOT NULL,
-    pass VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) CHECK (birth_date <= current_date - interval '18 years' OR phone IS NOT NULL) NOT NULL,
     fullname VARCHAR(255) NOT NULL,
     birth_date DATE NOT NULL,
     entry_date DATE DEFAULT CURRENT_DATE NOT NULL,
-    roles_id INTEGER REFERENCES roles(id),
-    PRIMARY KEY (serial, id)
+    roles_id INTEGER REFERENCES roles(id) NOT NULL,
+    PRIMARY KEY (id)
 );
 
+/*One to one relationships*/
+CREATE TABLE IF NOT EXISTS membership (
+    id SERIAL PRIMARY KEY,
+    users_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    product_id INTEGER REFERENCES product(id) ON DELETE CASCADE,
+    entry_date DATE,
+    end_date DATE,
+    UNIQUE (users_id, product_id, entry_date)
+);
+
+/*One to many relationships*/
+CREATE TABLE IF NOT EXISTS worker (
+    id SERIAL PRIMARY KEY,
+    users_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    roles_id INTEGER REFERENCES roles(id) NOT NULL,
+    payment_method INTEGER REFERENCES payment_method(id),
+    comments VARCHAR(255)
+);
+
+/*Many to many relationships*/
 CREATE TABLE IF NOT EXISTS children (
     id SERIAL PRIMARY KEY,
     parent_id INTEGER REFERENCES users(id),
@@ -36,49 +69,6 @@ CREATE TABLE IF NOT EXISTS emergency_contact (
     phone INTEGER NOT NULL
 );
 
-/*Payments tables*/
-CREATE TABLE IF NOT EXISTS product (
-    id SERIAL PRIMARY KEY,
-    descr VARCHAR(255) NOT NULL,
-    price INTEGER NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS payment_method (
-    id SERIAL PRIMARY KEY,
-    descr VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS payment (
-    id SERIAL PRIMARY KEY,
-    users_id INTEGER REFERENCES users(id),
-    product_id INTEGER REFERENCES product(id),
-    amount INTEGER NOT NULL,
-    date_of_payment DATE NOT NULL,
-    payment_method INTEGER REFERENCES payment_method(id)
-);
-
-CREATE TABLE IF NOT EXISTS salary_type (
-    id SERIAL PRIMARY KEY,
-    descr VARCHAR(255) NOT NULL
-);
-
-/*Gym Management*/
-CREATE TABLE IF NOT EXISTS worker (
-    id SERIAL PRIMARY KEY,
-    users_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
-    roles_id INTEGER REFERENCES roles(id) NOT NULL,
-    payment_method INTEGER REFERENCES payment_method(id),
-    salary_type INTEGER REFERENCES salary_type(id) NOT NULL,
-    bio VARCHAR(255)
-);
-
-CREATE TABLE IF NOT EXISTS membership (
-    id SERIAL PRIMARY KEY,
-    users_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
-    entry_date DATE,
-    end_date DATE
-);
-
 CREATE TABLE IF NOT EXISTS lesson (
     id SERIAL PRIMARY KEY,
     teacher_id INTEGER REFERENCES worker(users_id),
@@ -86,39 +76,63 @@ CREATE TABLE IF NOT EXISTS lesson (
     duration INTERVAL NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS special_event (
+    id SERIAL PRIMARY KEY,
+    event_date TIMESTAMP NOT NULL,
+    product_id INTEGER REFERENCES non_membership_product(id) ON DELETE CASCADE,
+    descr VARCHAR(255) NOT NULL,
+    duration INTERVAL NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS event_teachers (
+    id SERIAL PRIMARY KEY,
+    event_id INTEGER REFERENCES special_event(id) ON DELETE CASCADE,
+    teacher_id INTEGER REFERENCES worker(users_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS student_attendance (
     id SERIAL PRIMARY KEY,
     lesson_id INTEGER REFERENCES lesson(id) ON DELETE CASCADE,
     student_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     attendance BOOLEAN DEFAULT NULL,
-    justification VARCHAR(255)
+    justification VARCHAR(255),
+    UNIQUE (lesson_id, student_id)
 );
 
-/*Triggers (WORK IN PROGRESS)
-CREATE OR REPLACE FUNCTION set_end_date() RETURNS TRIGGER AS $$
-BEGIN
-    NEW.end_date := NEW.entry_date + INTERVAL '1 month';
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+CREATE TABLE IF NOT EXISTS teacher_hours (
+    id SERIAL PRIMARY KEY,
+    teacher_id INTEGER REFERENCES worker(users_id) ON DELETE CASCADE,
+    payment_month DATE NOT NULL,
+    total_hours INTEGER NOT NULL
+);
 
-CREATE TRIGGER set_end_date_before_insert
-BEFORE INSERT ON membership
-FOR EACH ROW
-EXECUTE FUNCTION set_end_date();
+/*Basic inserts*/
+INSERT INTO  roles (descr) 
+VALUES 
+    ('miembro'),
+    ('apoderado'),
+    ('trabajador'),
+    ('administracion');
 
-CREATE OR REPLACE FUNCTION add_membership() RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.roles_id IN (1, 2) THEN
-        INSERT INTO climbing_gym.membership (users_id, entry_date, end_date)
-        VALUES (NEW.id, CURRENT_DATE, CURRENT_DATE + INTERVAL '1 month');
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+INSERT INTO product (descr) 
+VALUES       
+    ('Clases 3 por semana'),
+    ('Clases 2 por semana'),
+    ('Clases 1 por semana'),
+    ('Mes libre');
 
-CREATE TRIGGER add_membership_after_insert
-AFTER INSERT ON climbing_gym.users
-FOR EACH ROW
-EXECUTE FUNCTION add_membership();
-*/
+INSERT INTO non_membership_product (descr)
+VALUES
+    ('Clase 1D niño'),
+    ('Clase 1D adulto'),
+    ('Dia libre'),
+    ('Evento');
+
+INSERT INTO payment_method (descr) 
+VALUES
+    ('yape'),
+    ('plin'),
+    ('transferencia bcp'),
+    ('transferencia otros'),
+    ('efectivo'),
+    ('pos');

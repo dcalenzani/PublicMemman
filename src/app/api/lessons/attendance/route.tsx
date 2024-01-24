@@ -10,6 +10,7 @@ export async function GET(request: Request) {
   if (lesson_id) {
     attendee = await sql`
     SELECT 
+      student_attendance.id as id,
       users.fullname as Estudiante,
       student_attendance.attendance as Asistencia,
       student_attendance.justification as Observaciones

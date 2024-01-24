@@ -14,37 +14,40 @@ export async function GET(request: Request) {
         members = await sql`
         SELECT 
             fullname as nombre,
-            users_id as DNI,
+            product_name as producto,
             email,
             phone as Tel,
             TO_CHAR(membership.entry_date, 'YYYY-MM-DD') as Ingreso,
             TO_CHAR(membership.end_date, 'YYYY-MM-DD') as Vencimiento
         FROM climbing_gym.users
             INNER JOIN climbing_gym.membership ON membership.users_id = users.id
+            INNER JOIN climbing_gym.products ON products.id = membership.products_id
         WHERE roles_id = ${roles_id}`;
     } else if (users_id) {
         members = await sql`
         SELECT 
             fullname as nombre,
-            users_id as DNI,
+            product
             email,
             phone as Tel,
             TO_CHAR(membership.entry_date, 'YYYY-MM-DD') as Ingreso,
             TO_CHAR(membership.end_date, 'YYYY-MM-DD') as Vencimiento
         FROM climbing_gym.users
             INNER JOIN climbing_gym.membership ON membership.users_id = users.id
+            INNER JOIN climbing_gym.products ON products.id = membership.products_id
         WHERE users_id = ${users_id}`;
     } else {
         members = await sql`
         SELECT 
             fullname as nombre,
-            users_id as DNI,
+            product
             email,
             phone as Tel,
             TO_CHAR(membership.entry_date, 'YYYY-MM-DD') as Ingreso,
             TO_CHAR(membership.end_date, 'YYYY-MM-DD') as Vencimiento
         FROM climbing_gym.users
-            INNER JOIN climbing_gym.membership ON membership.users_id = users.id`;
+            INNER JOIN climbing_gym.membership ON membership.users_id = users.id,
+            INNER JOIN climbing_gym.products ON products.id = membership.products_id`;
     }
     return NextResponse.json({ members: members.rows }, { status: 200 });
 }

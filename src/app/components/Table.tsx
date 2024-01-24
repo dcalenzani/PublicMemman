@@ -1,18 +1,19 @@
 'use client'
-
 import React, { useEffect, useState } from 'react';
+import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 
-interface TableProps {
+interface DataTableProps {
     className?: string;
     endpoint: string;
     dataKey: string;
-    onRowClick?: (rowData: { [key: string]: any }) => void;
+    id: string;
+    onIdSelected: (id: string | null) => void;
 }
 
-const Table: React.FC<TableProps> = ({ className, endpoint, dataKey, onRowClick })  => {
-    
+const DataTable: React.FC<DataTableProps> = ({ className, endpoint, dataKey, id, onIdSelected }) => {
     const [data, setData] = useState<{ [key: string]: any }[]>([]);
-    const [columns, setColumns] = useState<string[]>([]);
+    const [columns, setColumns] = useState<GridColDef[]>([]);
+    const [selectedId, setSelectedId] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,7 +23,12 @@ const Table: React.FC<TableProps> = ({ className, endpoint, dataKey, onRowClick 
                 const dataArray = responseData[dataKey];
                 setData(dataArray);
                 if (dataArray && dataArray.length > 0) {
-                    setColumns(Object.keys(dataArray[0]));
+                    const columnDefs = Object.keys(dataArray[0]).map((column) => ({
+                        field: column,
+                        headerName: column,
+                        flex: 1,
+                    }));
+                    setColumns(columnDefs);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -32,26 +38,40 @@ const Table: React.FC<TableProps> = ({ className, endpoint, dataKey, onRowClick 
         fetchData();
     }, [endpoint, dataKey]);
 
+
+    const handleRowClick = (params: GridRowParams) => {
+        setSelectedId(params.id as string);
+        onIdSelected(params.id as string);
+    };
+
     return (
-        <table className={`w-screen text-center overflow-auto [&>thead]:bg-yellow-300 [&>thead]:text-slate-950 ${className}`}>
-            <thead>
-                <tr>
-                {columns.map((column, index) => (
-                        <th className="border border-black uppercase" key={index}>{column}</th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {data.map((row, rowIndex) => (
-                    <tr key={rowIndex} onClick={() => onRowClick && onRowClick(row)}>
-                    {columns.map((column, index) => (
-                            <td className="border border-white bg-zinc-900" key={index}>{row[column]}</td>
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+        <div style={{ height: 400, width: '100%' }}>
+            <DataGrid
+                rows={data.map((item) => ({ ...item, id: item[id] }))}
+                columns={columns}
+                className={`${className}`}
+                onRowClick={handleRowClick}
+                sx={{
+                    backgroundColor: "#0d0c0d",
+                    '& .MuiDataGrid-footerContainer': {
+                        color: 'black',
+                        backgroundColor: 'rgb(253 224 71)',
+                    },
+                    '& .MuiDataGrid-main': {
+                        color: "white",
+                    },
+                    '& .MuiDataGrid-columnHeader': {
+                        fontWeight: 700,
+                        backgroundColor: 'rgb(253 224 71)',
+                        color: '#262527',
+                    },
+                    '& .MuiDataGrid-row:hover': {
+                        backgroundColor: '#282528',
+                    },
+                }}
+            />
+        </div>
     );
 };
 
-export default Table;
+export default DataTable;

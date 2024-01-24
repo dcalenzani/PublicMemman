@@ -16,8 +16,13 @@ export async function GET(request: Request) {
     }
 
     await sql`
-      INSERT INTO climbing_gym.users (id, fullname, email, phone, birth_date, roles_id) 
-      VALUES (${id}, ${fullname}, ${email}, ${phone}, ${birth_date}, ${roles_id});
+        UPDATE climbing_gym.users
+        SET fullname = ${fullname},
+                email = ${email},
+                phone = ${phone},
+                birth_date = ${birth_date},
+                roles_id = ${roles_id}
+        WHERE id = ${id};
     `;
 
     return NextResponse.json({ message: 'Insert successful' }, { status: 200 });

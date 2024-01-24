@@ -12,17 +12,16 @@ export async function GET(request: Request) {
     SELECT 
     users.id as DNI,
     users.fullname as Nombre,
-    users.birth_date as "Fecha de nacimiento",
-    users.phone as Telefono, email as Email,
+    TO_CHAR(users.birth_date, 'DD-MM-YYYY') as "Fecha de nacimiento",
+    users.phone as Telefono,
+    users.email as Email,
     payment_method.descr as "Metodo de pago",
-    salary_type.descr as "Tipo de salario"
+    comments as Comentarios
     FROM climbing_gym.worker 
-    INNER JOIN climbing_gym.users 
-        ON worker.users_id = users.id 
-    INNER JOIN climbing_gym.payment_method
-        ON worker.payment_method = payment_method.id
-    INNER JOIN climbing_gym.salary_type
-        ON worker.salary_type = salary_type.id
+      LEFT JOIN climbing_gym.users 
+          ON worker.users_id = users.id 
+      LEFT JOIN climbing_gym.payment_method
+          ON worker.payment_method = payment_method.id
     WHERE users_id = ${id}
     ;
       `;
@@ -31,17 +30,14 @@ export async function GET(request: Request) {
     SELECT 
         users.id as DNI,
         users.fullname as Nombre,
-        users.birth_date as "Fecha de nacimiento",
+        TO_CHAR(users.birth_date, 'DD-MM-YYYY') as "Fecha de nacimiento",
         users.phone as Telefono, email as Email,
-        payment_method.descr as "Metodo de pago",
-        salary_type.descr as "Tipo de salario"
+        payment_method.descr as "Metodo de pago"
     FROM climbing_gym.worker 
-    INNER JOIN climbing_gym.users 
-        ON worker.users_id = users.id 
-    INNER JOIN climbing_gym.payment_method
-        ON worker.payment_method = payment_method.id
-    INNER JOIN climbing_gym.salary_type
-        ON worker.salary_type = salary_type.id;
+      LEFT JOIN climbing_gym.users 
+          ON worker.users_id = users.id 
+      LEFT JOIN climbing_gym.payment_method
+          ON worker.payment_method = payment_method.id
       `;
     }
     return NextResponse.json({ teachers: teachers.rows }, { status: 200 });
