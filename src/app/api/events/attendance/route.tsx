@@ -9,15 +9,7 @@ export async function GET(request: Request) {
         
     if (event_id) {
     teachers = await sql`
-        SELECT 
-            users.fullname as Profesor,
-            worker.payment_method as 'Forma de Pago',
-            TOCHAR(event_date::TIME, 'HH24:MI') as Hora,
-            TOCHAR(duration, 'HH24:MI') as Duracion,
-        FROM climbing_gym.event_teachers
-        INNER JOIN climbing_gym.worker ON event_teachers.worker_id = worker.id
-        INNER JOIN climbing_gym.users ON worker.users_id = users.id
-        WHERE event_teachers.event_id = ${event_id};
+        SELECT * FROM climbing_gym.event_teachers;
         `;
     } else if (teacher_id && event_id) {
         teachers = await sql`

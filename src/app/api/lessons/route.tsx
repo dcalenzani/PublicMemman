@@ -52,7 +52,7 @@ export async function GET(request: Request) {
       lessons = await sql 
       `SELECT
       lesson.id,
-      lesson.lesson_date::DATE as lesson_date,
+      TO_CHAR(lesson.lesson_date::DATE, 'DD-MM-YYYY') as lesson_date,
       lesson.lesson_date::TIME as lesson_time,
       TO_CHAR(lesson.duration, 'HH24:MI') AS duration,
       users.fullname as teacher

@@ -85,9 +85,9 @@ CREATE TABLE IF NOT EXISTS special_event (
 );
 
 CREATE TABLE IF NOT EXISTS event_teachers (
-    id SERIAL PRIMARY KEY,
     event_id INTEGER REFERENCES special_event(id) ON DELETE CASCADE,
-    teacher_id INTEGER REFERENCES worker(users_id) ON DELETE CASCADE
+    teacher_id INTEGER REFERENCES worker(users_id) ON DELETE CASCADE,
+    PRIMARY KEY (event_id, teacher_id)
 );
 
 CREATE TABLE IF NOT EXISTS student_attendance (

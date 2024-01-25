@@ -13,6 +13,7 @@ const AsistenciaForm = () => {
         id: string;
     };
 
+    
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const idParam = urlParams.get('id');
@@ -33,7 +34,9 @@ const AsistenciaForm = () => {
     const [student_id, setStudent] = useState('');
     const [students, setStudents] = useState({members: []});
     const [lessons, setLessons] = useState({lessons: []});
-    const [attendanceForm, setAttendanceForm] = useState<AttendanceForm>({
+    const [attendanceForm, setAttendanceForm] = 
+    
+    useState<AttendanceForm>({
         lesson_id: '',
         student_id: '',
     });
@@ -57,10 +60,8 @@ const AsistenciaForm = () => {
 
         const fillUserUrlParams = (attendanceForm: any) => {
             const urlAttendanceParams = new URLSearchParams({
-                users_id: attendanceForm.users_id,
-                product_id: attendanceForm.product_id,
-                entry_date: attendanceForm.entry_date,
-                end_date: attendanceForm.end_date
+                lesson_id: attendanceForm.lesson_id,
+                student_id: attendanceForm.student_id,
             }).toString();
             return urlAttendanceParams;
         };

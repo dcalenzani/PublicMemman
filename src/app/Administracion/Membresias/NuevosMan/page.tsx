@@ -53,26 +53,23 @@ const PersonalDataForm = () => {
         phone: '',
     });
 
+    const [feedbackUser, setFeedbackUser] = useState('');
+    const [feedbackChildren, setFeedbackChildren] = useState('');
 
-    const [accepted, setAccepted] = useState(false);
-    
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [birthDate, setbirthDate] = useState('');
     const [id, setId] = useState('');
-    const [selectedOption, setSelectedOption] = useState('clases');
 
     const [parentName, setParentName] = useState('');
     const [parentEmail, setParentEmail] = useState(''); 
     const [parentPhone, setParentPhone] = useState('');
     const [parentBirthdate, setParentBirthdate] = useState('');
     const [parentId, setParentId] = useState('');
-    const [parentRole, setParentRole] = useState('3');
     
     const [emergencyName, setEmergencyName] = useState('');
     const [emergencyPhone, setEmergencyPhone] = useState('');
-    const [users_id, setUsersId] = useState('');
 
     const dialogUnder = useRef(null);
 
@@ -104,18 +101,16 @@ const PersonalDataForm = () => {
         try {
             const urlParams = fillUrlParams(newFormData);
             const response = await fetch(`/api/users/new?${urlParams}`);
+            if ( response.status === 200 ) {
+                setFeedbackUser('Usuario creado correctamente');
+            } else {
+                setFeedbackUser('Error al crear usuario');
+            }
             console.log(response);
         } catch (error) {
             console.error('Error:', error);
         }
 
-        if (isUnder18 && dialogUnder.current) {
-            (dialogUnder.current as HTMLDialogElement).showModal();
-        }
-
-        if (isOver18 && dialogOver.current) {
-            (dialogOver.current as HTMLDialogElement).showModal();
-        }
     };
 
     console.log(formData);
@@ -150,6 +145,11 @@ const PersonalDataForm = () => {
             const urlParentParams = fillParentUrlParams(formDataParent);
             const parentResponse = await fetch(`/api/users/new?${urlParentParams}`);
             console.log(parentResponse);
+            if ( parentResponse.status === 200 ) {
+                setFeedbackChildren('Usuario creado correctamente');
+            } else {
+                setFeedbackChildren('Error al crear usuario');
+            }
         } catch (error) {
             console.error('Error:', error);
         }
@@ -162,6 +162,11 @@ const PersonalDataForm = () => {
         try {
             const urlKinshipParams = fillKinshipUrlParams(formDataKinship);
             const kinshipResponse = await fetch(`/api/kinship/new?${urlKinshipParams}`);
+            if ( kinshipResponse.status === 200 ) {
+                setFeedbackChildren('Usuario creado correctamente');
+            } else {
+                setFeedbackChildren('Error al crear usuario');
+            }
             console.log(kinshipResponse);
         } catch (error) {
             console.error('Error:', error);
@@ -196,14 +201,15 @@ const PersonalDataForm = () => {
         } catch (error) {
             console.error('Error:', error);
         }
-        window.location.href = './NuevosMan/End';
+        window.location.href = '/Programa/Membresias';
     };    
 
     console.log(emergencyFormData);
 
     return (
-        <><div className='mt-10 md:mt-32 mb-32 mx-4'>
-            <>
+        <>
+        <div className='mt-10 md:mt-32 mb-32 mx-4'>
+            <div>
                 <h1 className='mb-3'>Registro del Escalador</h1>
                 <form onSubmit={handleSubmit} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-700 [&>input]:text-slate-950 [&>label]:px-2 md:mt-4 mx-4'>
                     <label>
@@ -233,68 +239,70 @@ const PersonalDataForm = () => {
                     <br />
                     <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm mb-10'>Submit</button>
                 </form>
-                {isUnder18 && (
-                    <dialog className='mt-10 p-3 rounded-sm bg-slate-800 backdrop-filter backdrop-blur-sm' ref={dialogUnder}>
-                        <h2 className='bg-yellow-300 w-1/2 p-3 mb-3 text-slate-950'>Proporcione información adicional del menor</h2>
-                        <div className='md:mt-4 mx-4 text-slate-200 '>
-                            <h1 className='mb-3'>Información del Apoderado</h1>
-                            <div />
-                            <form onSubmit={handleSubmitParent} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-950 [&>label]:px-2 md:mt-4 mx-4'>
-                                <label>
-                                    Dni:
-                                    <input type="text" value={parentId} onChange={(e) => setParentId(e.target.value)} className='text-slate-950' required/>
-                                </label>
-                                <br />
-                                <label>
-                                    Nombres Completos:
-                                    <input type="text" value={parentName} onChange={(e) => setParentName(e.target.value)} className='text-slate-950' required/>
-                                </label>
-                                <br />
-                                <label>
-                                    Email:
-                                    <input type="email" value={parentEmail} onChange={(e) => setParentEmail(e.target.value)} className='text-slate-950' required/>
-                                </label>
-                                <br />
-                                <label>
-                                    Telef:
-                                    <input type="tel" value={parentPhone} onChange={(e) => setParentPhone(e.target.value)} className='text-slate-950' required/>
-                                </label>
-                                <br />
-                                <label>
-                                    Fecha de Nac:
-                                    <input type="date" value={parentBirthdate} onChange={(e) => setParentBirthdate(e.target.value)} className='text-slate-950' required/>
-                                </label>
-                                <br />
-                                <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm' onClick={() => window.location.href = './NuevosMan/End'}>Submit</button>
-                            </form>
-                        </div>
-                    </dialog>
-                )}
-                {isOver18 && (
-                    <dialog className='mt-10 p-3 rounded-sm bg-slate-800 backdrop-filter backdrop-blur-sm' ref={dialogOver}>
-                        <h2 className='bg-yellow-300 w-1/2 p-3 mb-3 text-slate-950'>Proporcione información del contacto de emergencia</h2>
-                        <div className='md:mt-4 mx-4 text-slate-200'>
-                            <h1 className='mb-3'>Información de Emergencia</h1>
-                            <div />
-                            <form onSubmit={handleSubmitEmergency} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-950 [&>label]:px-2 [&>input]:text-slate-950 md:mt-4 mx-4'>
-                                <label>
-                                    Nombre completo:
-                                    <input type="text" value={emergencyName} onChange={(e) => setEmergencyName(e.target.value)} className='text-slate-950' required/>
-                                </label>
-                                <br />
-                                <label>
-                                    Telef:
-                                    <input type="tel" value={emergencyPhone} onChange={(e) => setEmergencyPhone(e.target.value)} className='text-slate-950' required/>
-                                </label>
-                                <br />
-                                <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm' onClick={() => window.location.href = './NuevosMan/End'}>
-                                    Submit
-                                </button>
-                            </form>
-                        </div>
-                    </dialog>
-                )}
-            </>
+                <p>Estado: {feedbackUser}</p>
+            </div>
+            {isUnder18 && (
+                <div className='mt-10 p-3 rounded-sm bg-slate-800 backdrop-filter backdrop-blur-sm' ref={dialogUnder}>
+                    <h2 className='bg-yellow-300 w-1/2 p-3 mb-3 text-slate-950'>Proporcione información adicional sobre el Apoderado</h2>
+                    <div className='md:mt-4 mx-4 text-slate-200 '>
+                        <h1 className='mb-3'>Información del Apoderado</h1>
+                        <div />
+                        <form onSubmit={handleSubmitParent} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-950 [&>label]:px-2 md:mt-4 mx-4'>
+                            <label>
+                                Dni:
+                                <input type="text" value={parentId} onChange={(e) => setParentId(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <label>
+                                Nombres Completos:
+                                <input type="text" value={parentName} onChange={(e) => setParentName(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <label>
+                                Email:
+                                <input type="email" value={parentEmail} onChange={(e) => setParentEmail(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <label>
+                                Telef:
+                                <input type="tel" value={parentPhone} onChange={(e) => setParentPhone(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <label>
+                                Fecha de Nac:
+                                <input type="date" value={parentBirthdate} onChange={(e) => setParentBirthdate(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm' onClick={() => window.location.href = '/Administracion/Membresias'}>Submit</button>
+                        </form>
+                    </div>
+                </div>
+            )}
+            {isOver18 && (
+                <div className='mt-10 p-3 rounded-sm bg-slate-800 backdrop-filter backdrop-blur-sm' ref={dialogOver}>
+                    <h2 className='bg-yellow-300 w-1/2 p-3 mb-3 text-slate-950'>Proporcione información del contacto de emergencia</h2>
+                    <div className='md:mt-4 mx-4 text-slate-200'>
+                        <h1 className='mb-3'>Información de Emergencia</h1>
+                        <div />
+                        <form onSubmit={handleSubmitEmergency} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-950 [&>label]:px-2 [&>input]:text-slate-950 md:mt-4 mx-4'>
+                            <label>
+                                Nombre completo:
+                                <input type="text" value={emergencyName} onChange={(e) => setEmergencyName(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <label>
+                                Telef:
+                                <input type="tel" value={emergencyPhone} onChange={(e) => setEmergencyPhone(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm' onClick={() => window.location.href = '/Administracion/Membresias'}>
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
+            <p>Estado: {feedbackChildren}</p>
             <Hamburguer>        
                 <a href='../Membresias'>
                     <p>Membresias y Clases</p>

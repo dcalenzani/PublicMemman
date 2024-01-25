@@ -5,37 +5,19 @@ import Hamburguer from '@/app/components/HamburguerMenu';
 const EventFormForm = () => {
 
     type EventForm = {
-        product_id: string;
         event_date: string;
         duration: string;
         description: string;
     };
 
-    interface ProductsType {
-        Products: Array<{
-            dni: string;
-            nombre: string;
-          }>;
-      }
-
-    const [Products, setProducts] = useState<any[]> ([]);
-
-    useEffect(() => {
-        fetch('/api/products')
-            .then(response => response.json())
-            .then((data: ProductsType) => setProducts(data.Products))
-            .catch(error => console.error('Error:', error));
-    }, []);
 
     const [EventForm, setEventForm] = useState<EventForm>({
-        product_id: '',
         event_date: '',
         duration: '',
         description: '',
     });
 
     const [feedback, setFeedback] = useState('');
-    const [Productid, setProductId] = useState('4');
     const [lessonDate, setDate] = useState('');
     const [lessonTime, setTimeOption] = useState('');
     const [duration, setDuration] = useState('');
@@ -45,10 +27,9 @@ const EventFormForm = () => {
         e.preventDefault();
 
         const EventForm: EventForm = {
-            product_id: Productid,
             event_date: `${lessonDate} ${lessonTime}`,
-            duration: duration,
-            description: '',
+            duration: `${duration}`,
+            description: `${des}`,
         };
 
         setEventForm(EventForm);
@@ -70,14 +51,13 @@ const EventFormForm = () => {
             } catch (error) {
                 console.error('Error:', error);
             }
-            window.location.href = '/Administracion/Programa';
+            /*window.location.href = '/Administracion/Programa';*/
         };  
         await fillUserUrlParams(EventForm);
 
     };
         
     console.log(EventForm);
-    console.log(Products);
 
     return (
         <div>

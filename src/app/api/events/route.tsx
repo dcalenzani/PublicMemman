@@ -3,25 +3,28 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
     const url = new URL(request.url);
-    const product_id = url.searchParams.get('product_id');
+    const id = url.searchParams.get('id');
     const event_date = url.searchParams.get('event_date');
     let special_event;
-    if (product_id) {
+    if (id) {
         special_event = await sql`
-            SELECT descr as Evento,
-            event_date as Fecha,
-            duration as Duracion,
-            product_id as Producto
+            SELECT             
+            id,
+            descr as Evento,
+            TO_CHAR(event_date::DATE, 'DD-MM-YYYY') as Dia,
+            TO_CHAR(event_date::TIME, 'HH24:MM') as Hora,
+            TO_CHAR(duration, 'HH24:MM') as Duracion
             FROM climbing_gym.special_event 
-            WHERE product_id=${product_id}`;
+            WHERE id=${id}`;
     } else if (event_date) {
         special_event = await sql`
-            SELECT descr as Evento,
-            event_date as Fecha,
-            duration as Duracion,
-            product_id as Producto
+            SELECT 
+            id,
+            descr as Evento,
+            TO_CHAR(event_date::TIME, 'HH24:MM') as Fecha,
+            TO_CHAR(duration, 'HH24:MM') as Duracion
             FROM climbing_gym.special_event
-            WHERE event_date=${event_date}
+            WHERE event_date::DATE=${event_date};
             `
     } else {
         special_event = await sql`SELECT * FROM climbing_gym.special_event`;
