@@ -21,7 +21,7 @@ const Hamburguer: React.FC<HamburguerProps> = () => {
     
     return (
         <>
-            <div className="fixed bottom-0 pb-3 left-108 flex h-28 w-full items-center justify-center pt-8 bg-gradient-to-t from-white via-white  overflow-hidden dark:from-black dark:via-black">
+            <div className="fixed z-50 bottom-0 pb-3 left-108 flex h-28 w-full items-center justify-center pt-8 bg-gradient-to-t from-white via-white  overflow-hidden dark:from-black dark:via-black">
                 <a
                     className="flex place-items-center gap-2 pb-4 px-2 pt-0 pointer-events-auto text-black bg-white rounded-md"
                     href="/Administracion"

@@ -17,9 +17,12 @@ const EventFormForm = () => {
         description: '',
     });
 
+    const today = new Date();
+    const formattedTime = `${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}`;
+
     const [feedback, setFeedback] = useState('');
-    const [lessonDate, setDate] = useState('');
-    const [lessonTime, setTimeOption] = useState('');
+    const [lessonDate, setDate] = useState(today.toISOString().substring(0, 10));
+    const [lessonTime, setTimeOption] = useState(formattedTime);
     const [duration, setDuration] = useState('');
     const [des, setDes] = useState('');
 
@@ -77,13 +80,14 @@ const EventFormForm = () => {
                 <br />
                 <label>
                     Tipo de Evento:
-                    <input value={des} onChange={(e) => setDes(e.target.value)} className='text-slate-950'>
+                    <input placeholder='Informacion relevante' value={des} onChange={(e) => setDes(e.target.value)} className='text-slate-950'>
                     </input>
                 </label>
                 <br />
                 <label>
                     Duracion:
                     <select value={duration} onChange={(e) => setDuration(e.target.value)} className='text-slate-950'>
+                        <option> Duracion</option>
                         <option key="1 Hora" value="01:00:00">1:00H</option>
                         <option key="1:30 horas" value="01:30:00">1:30H</option>
                         <option key="2:00 horas" value="02:00:00">2:00H</option>

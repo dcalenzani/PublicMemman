@@ -101,46 +101,47 @@ const AsistenciaForm = () => {
                 </a>
             </Hamburguer>
             <div className='flex-col flex my-32 mx-4'>
-                <h1 className='mb-3'>Registro de clases</h1>
-                    {lessons.lessons.map((lesson: any) => (
-                <form key={lesson.id} onSubmit={handleSubmit} className='flex flex-col space-y-2 space-x-1 my-8 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-700 [&>input]:text-slate-950'>
-                    <label>
-                        <input type="text" key={lesson.id} value={lesson.id} className='text-slate-950' readOnly />
-                    </label>
-                    <br />
-                    <label>
-                        <input type="text" key={lesson.lesson_date} value={lesson.lesson_date} className='text-slate-950' readOnly /> Fecha
-                    </label>
-                    <br />
-                    <label>
-                        <input type="text" value={lesson.teacher} key={lesson.teacher} className='text-slate-950' readOnly /> Profesor
-                    </label>
-                    <label>
-                        <input type="text" key={lesson.lesson_time} value={lesson.lesson_time} className='text-slate-950' readOnly /> Hora
-                    </label>
-                    <br />
-                    <label>
-                        <input type="text" key={lesson.duration} value={lesson.duration} className='text-slate-950' readOnly /> Duracion
-                    </label>
-                    <br />
-                    <label>
-                        <select value={student_id} onChange={(e) => setStudent(e.target.value)} className='text-slate-950'>
+                <h1 className='mb-3 text-2xl'>Registro de clases</h1>
+                <table className='table-auto text-center border [&>thead]:bg-zinc-700'>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Profesor</th>
+                            <th>Hora</th>
+                            <th>Duracion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {lessons.lessons.map((lesson: any) => (
+                            <tr key={lesson.id}>
+                                <td>{lesson.id}</td>
+                                <td>{lesson.lesson_date}</td>
+                                <td>{lesson.teacher}</td>
+                                <td>{lesson.lesson_time}</td>
+                                <td>{lesson.duration}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <form onSubmit={handleSubmit} className='flex flex-col my-8 bg-slate-700 p-10'>
+                    <label className='m-4'>
+                        Alumnos
+                        <select value={student_id} onChange={(e) => setStudent(e.target.value)} className='text-slate-950 mx-4'>
                             <option value="">Seleccione un estudiante</option>
                             {students.members.map((student: any) => (
                                 <option key={student.dni} value={student.dni}>{student.nombre}</option>
                             ))} 
-                        </select>Alumnos
+                        </select>
                     </label>
-                    <br />
                     <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-md'>Submit</button>
                 </form>
-                ))}
+                <p>Sic: {feedback}</p>
                 <Table endpoint={`/api/lessons/attendance?lesson_id=${id}`}
                 dataKey="attendee" id={'id'} onIdSelected={function (id: string | null): void {
                     throw new Error('Function not implemented.');
-                } }                />
-                <p>Sic: {feedback}</p>
-
+                } }
+                />
             </div>
         </div>
     );

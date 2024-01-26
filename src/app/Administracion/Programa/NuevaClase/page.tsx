@@ -32,11 +32,14 @@ const LessonFormForm = () => {
         duration: '',
     });
 
+    const today = new Date();
+    const formattedTime = `${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}`;
+
+    const [lessonDate, setDate] = useState(today.toISOString().substring(0, 10));
     const [feedback, setFeedback] = useState('');
     const [Teacherid, setTeacherId] = useState('');
-    const [lessonDate, setDate] = useState('');
+    const [lessonTime, setTimeOption] = useState(formattedTime);
     const [duration, setDuration] = useState('');
-    const [lessonTime, setTimeOption] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -88,7 +91,7 @@ const LessonFormForm = () => {
                 <br />
                 <label>
                     Hora:
-                    <input type="time" value={lessonTime} onChange={(e) => setTimeOption(e.target.value)} className='text-slate-950' />
+                    <input type="time" value={lessonTime} onChange={(e) => setTimeOption(e.target.value)} className='text-slate-950'></input>
                 </label>
                 <br />
                 <label>
@@ -104,6 +107,7 @@ const LessonFormForm = () => {
                 <label>
                     Duracion:
                     <select value={duration} onChange={(e) => setDuration(e.target.value)} className='text-slate-950'>
+                        <option value=""> Seleccione una hora </option>
                         <option key="1 Hora" value="01:00:00">1 Hora</option>
                         <option key="1:30 horas" value="01:30:00">1:30 horas</option>
                     </select>
@@ -111,7 +115,7 @@ const LessonFormForm = () => {
                 <br />
                 <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-md'>Submit</button>
             </form>
-            <p>Sic: {feedback}</p>
+            <p className='text-center my-5'>Sic: {feedback}</p>
             </div>
             <Hamburguer>
                 <a href='../Membresias'>

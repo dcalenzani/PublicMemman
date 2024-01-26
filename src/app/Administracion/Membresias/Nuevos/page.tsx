@@ -73,11 +73,21 @@ const PersonalDataForm = () => {
     const [emergencyPhone, setEmergencyPhone] = useState('');
     const [users_id, setUsersId] = useState('');
 
-    const handleAcceptance = () => {
-        setAccepted(!accepted);
-        console.log(accepted);
+    const [isChecked, setChecked] = useState(false);
+    const [showTerms, setShowTerms] = useState(false);
+
+    const handleCheckboxChange = (event: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
+        setChecked(event.target.checked);
     };
 
+    const handleTermsClick = () => {
+        setShowTerms(!showTerms);
+    };
+
+    const handleCloseClick = () => {
+        setShowTerms(false);
+    };
+    
     const dialogUnder = useRef(null);
 
     const dialogOver = useRef(null);
@@ -211,154 +221,172 @@ const PersonalDataForm = () => {
     console.log(emergencyFormData);
 
     return (
-        <><div className='mt-10 md:mt-32 mb-32 mx-4'>
-            <div>
-            <p className='text-2xl font-bold mb-4 text-center'>DECLARACIÓN JURADA DE RESPONSABILIDAD</p>
-            <p className='leading-5 p-5 text-justify w-full h-auto text-slate-200'>
-                Lea atentamente el siguiente documento, si está de acuerdo, marque la casilla de aceptación y proceda a llenar el formulario de registro.
-            </p>
-            <br />
-            <br />
-                <p className='text-2xl font-bold mb-4 text-center'>DESLINDE DE RESPONSABILIDADES</p>
-                <ul className='leading-5 p-5 text-justify w-full h-auto text-slate-200 marker:text-slate-50'>
-                    <li>
-                    Yo reconozco y acepto que su práctica negligente por mi persona, sin la supervisión del personal adecuado del gimnasio, no sujeta a las Normas y Reglamento de Seguridad del gimnasio, puede producir lesiones físicas leves y/o graves, tales como caídas, lesiones, fracturas, torcedurasm entre otros. Por ello, asumo la total responsabilidad por todos los costos, gastos, daños, responsabilidad y otras pérdidas que mi participación pueda incurrir en relación con los riesgos mencionados anteriormente, sin la supervisión adecuada y correcta, y exonera expresamente a la empresa de toda responsabilidad por lesión u otro problema que resulte de alguna manera relacionado en la práctica de escalada de boulder y deportiva en el gimnasio.
-                    </li>
-                    <br />
-                    <li>
-                    Yo declaro gozar de buena condición física y mental, enteramente compatible y adecuada para realizar la práctica de la escalada deportiva y en boulder en el gimnasio de escalada; y que, por lo tanto, no padezco de problemas pre existentes, como de la columna o del corazón, entre otros,  que pudieran interferir con mi seguridad o la de terceros.
-                    </li>
-                    <br />
-                    <li>
-                    Yo me comprometo a utilizar las instalaciones del Gimnasio Basecamp Perú cumpliendo en todo momento con el Reglamento y Normas de Seguridad, de los que declaro tener pleno conocimiento. Si yo hago utilización indebida de la infraestructura y el material de seguridad y cualquier acción u omisión que durante el curso de la práctica o estadía en el Gimnasio de escalada BASECAMP PERÚ, sin la debida supervisión de los instructores capacitados, impida o perturbe el normal desarrollo, facultará a la dirección del Gimnasio Basecampperú para excluirme del lugar. Asimismo, Yo declaro responder por los daños ocasionados a las instalaciones o a terceros derivados de dichos actos.
-                    </li>
-                    </ul>
-                    <br />
-                <div className='flex flex-row space-x-4 place-items-center mb-10 border rounded-md bg-gray-800 p-2'>
-                    <input
-                        type="radio"
-                        id="accept"
-                        name="terms"
-                        checked={accepted}
-                        onChange={handleAcceptance}
-                        />
-                    <label htmlFor="accept"><b>Acepto</b> el deslinde de responsabilidades sobre mi seguridad o la del menor del que soy responsable, segun sea el caso</label>
-                </div>
-                <div className='flex flex-row space-x-4 place-items-center mb-10 border rounded-md bg-gray-800 p-2'>
-                    <input
-                        type="radio"
-                        id="decline"
-                        name="terms"
-                        checked={!accepted}
-                        onChange={handleAcceptance}
-                        />
-                    <label htmlFor="decline"><b>Rechazo</b> el deslinde de responsabilidades sobre mi seguridad o la del menor del que soy responsable, segun sea el caso</label>
-                </div>
-            </div>
-            {accepted && (
-                <>
-                    <h1 className='mb-3'>Registro del Escalador</h1>
-                    <form onSubmit={handleSubmit} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-700 [&>input]:text-slate-950 [&>label]:px-2 md:mt-4 mx-4'>
-                        <label>
-                            Nombre:
-                            <input type="text" value={name} onChange={(e) => setName(e.target.value)} className='text-slate-950' required/>
-                        </label>
-                        <br />
-                        <label>
-                            Email:
-                            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className='text-slate-950' required/>
-                        </label>
-                        <br />
-                        <label>
-                            Telef:
-                            <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className='text-slate-950' required/>
-                        </label>
-                        <br />
-                        <label>
-                            Fecha de Nac:
-                            <input type="date" value={birthDate} onChange={(e) => setbirthDate(e.target.value)} className='text-slate-950' required/>
-                        </label>
-                        <br />
-                        <label>
-                            id:
-                            <input type="text" value={id} onChange={(e) => setId(e.target.value)} className='text-slate-950' required/>
-                        </label>
-                        <br />
-                        <label>
-                            Selecciona una opción:
-                            <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)} className='text-slate-950'>
-                                <option value="clases">Clases</option>
-                                <option value="membresia">Membresía</option>
-                            </select>
-                        </label>
-                        <br />
-                        <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm mb-10'>Submit</button>
-                    </form>
-                    {isUnder18 && (
-                        <dialog className='mt-10 p-3 rounded-sm bg-slate-800 backdrop-filter backdrop-blur-sm' ref={dialogUnder}>
-                            <h2 className='bg-yellow-300 w-1/2 p-3 mb-3 text-slate-950'>Proporcione información adicional del menor</h2>
-                            <div className='md:mt-4 mx-4 text-slate-200 '>
-                                <h1 className='mb-3'>Información del Apoderado</h1>
-                                <div />
-                                <form onSubmit={handleSubmitParent} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-950 [&>label]:px-2 md:mt-4 mx-4'>
-                                    <label>
-                                        Nombre Completo:
-                                        <input type="text" value={parentName} onChange={(e) => setParentName(e.target.value)} className='text-slate-950' required/>
-                                    </label>
-                                    <br />
-                                    <label>
-                                        Email:
-                                        <input type="email" value={parentEmail} onChange={(e) => setParentEmail(e.target.value)} className='text-slate-950' required/>
-                                    </label>
-                                    <br />
-                                    <label>
-                                        Telef:
-                                        <input type="tel" value={parentPhone} onChange={(e) => setParentPhone(e.target.value)} className='text-slate-950' required/>
-                                    </label>
-                                    <br />
-                                    <label>
-                                        Fecha de Nac:
-                                        <input type="date" value={parentBirthdate} onChange={(e) => setParentBirthdate(e.target.value)} className='text-slate-950' required/>
-                                    </label>
-                                    <br />
-                                    <label>
-                                        id:
-                                        <input type="text" value={parentId} onChange={(e) => setParentId(e.target.value)} className='text-slate-950' required/>
-                                    </label>
-                                    <br />
-                                    <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm'>Submit</button>
-                                </form>
-                            </div>
-                        </dialog>
-                    )}
-                    {isOver18 && (
-                        <dialog className='mt-10 p-3 rounded-sm bg-slate-800 backdrop-filter backdrop-blur-sm' ref={dialogOver}>
-                            <h2 className='bg-yellow-300 w-1/2 p-3 mb-3 text-slate-950'>Proporcione información del contacto de emergencia</h2>
-                            <div className='md:mt-4 mx-4 text-slate-200'>
-                                <h1 className='mb-3'>Información de Emergencia</h1>
-                                <div />
-                                <form onSubmit={handleSubmitEmergency} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-950 [&>label]:px-2 [&>input]:text-slate-950 md:mt-4 mx-4'>
-                                    <label>
-                                        Nombre completo:
-                                        <input type="text" value={emergencyName} onChange={(e) => setEmergencyName(e.target.value)} className='text-slate-950' required/>
-                                    </label>
-                                    <br />
-                                    <label>
-                                        Telef:
-                                        <input type="tel" value={emergencyPhone} onChange={(e) => setEmergencyPhone(e.target.value)} className='text-slate-950' required/>
-                                    </label>
-                                    <br />
-                                    <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm' onClick={() => window.location.href = './Nuevos/End'}>
-                                        Submit
-                                    </button>
-                                </form>
-                            </div>
-                        </dialog>
-                    )}
-                </>
+        <>
+        <div className='mt-10 md:mt-32 mb-32 mx-4'>
+            <div></div>
+            <p className='text-2xl font-bold mb-4 text-center'>REGISTRO DEL ESCALADOR</p> 
+            <form onSubmit={handleSubmit} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-700 [&>input]:text-slate-950 [&>label]:px-2 md:mt-4 mx-4'>
+                <label>
+                    Nombre:
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} className='text-slate-950' required/>
+                </label>
+                <br />
+                <label>
+                    Email:
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className='text-slate-950' required/>
+                </label>
+                <br />
+                <label>
+                    Telef:
+                    <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className='text-slate-950' required/>
+                </label>
+                <br />
+                <label>
+                    Fecha de Nac:
+                    <input type="date" value={birthDate} onChange={(e) => setbirthDate(e.target.value)} className='text-slate-950' required/>
+                </label>
+                <br />
+                <label>
+                    id:
+                    <input type="text" value={id} onChange={(e) => setId(e.target.value)} className='text-slate-950' required/>
+                </label>
+                <br />
+                <label>
+                    Selecciona una opción:
+                    <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)} className='text-slate-950'>
+                        <option value="clases">Clases</option>
+                        <option value="membresia">Membresía</option>
+                    </select>
+                </label>
+                <br />
+                <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm mb-10'>Submit</button>
+            </form>
+            {isUnder18 && (
+                <dialog className='mt-10 p-3 rounded-sm bg-slate-800 backdrop-filter backdrop-blur-sm' ref={dialogUnder}>
+                    <h2 className='bg-yellow-300 w-1/2 p-3 mb-3 text-slate-950'>Proporcione información adicional del menor</h2>
+                    <div className='md:mt-4 mx-4 text-slate-200 '>
+                        <h1 className='mb-3'>Información del Apoderado</h1>
+                        <div />
+                        <form onSubmit={handleSubmitParent} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-950 [&>label]:px-2 md:mt-4 mx-4'>
+                            <label>
+                                Nombre Completo:
+                                <input type="text" value={parentName} onChange={(e) => setParentName(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <label>
+                                Email:
+                                <input type="email" value={parentEmail} onChange={(e) => setParentEmail(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <label>
+                                Telef:
+                                <input type="tel" value={parentPhone} onChange={(e) => setParentPhone(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <label>
+                                Fecha de Nac:
+                                <input type="date" value={parentBirthdate} onChange={(e) => setParentBirthdate(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <label>
+                                id:
+                                <input type="text" value={parentId} onChange={(e) => setParentId(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm'>Submit</button>
+                        </form>
+                    </div>
+                </dialog>
             )}
-        </div></>
-    );
-};
+            {isOver18 && (
+                <dialog className='mt-10 p-3 rounded-sm bg-slate-800 backdrop-filter backdrop-blur-sm' ref={dialogOver}>
+                    <h2 className='bg-yellow-300 w-1/2 p-3 mb-3 text-slate-950'>Proporcione información del contacto de emergencia</h2>
+                    <div className='md:mt-4 mx-4 text-slate-200'>
+                        <h1 className='mb-3'>Información de Emergencia</h1>
+                        <div />
+                        <form onSubmit={handleSubmitEmergency} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-950 [&>label]:px-2 [&>input]:text-slate-950 md:mt-4 mx-4'>
+                            <label>
+                                Nombre completo:
+                                <input type="text" value={emergencyName} onChange={(e) => setEmergencyName(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <label>
+                                Telef:
+                                <input type="tel" value={emergencyPhone} onChange={(e) => setEmergencyPhone(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm' onClick={() => window.location.href = './Nuevos/End'}>
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </dialog>
+            )}
+        <div className='my-5 text-zinc-800'>
+                <div className='flex flex-row space-x-4 place-items-center mb-10 border rounded-md bg-gray-200 p-2'>
+                <input 
+                type="checkbox" 
+                id="terms" 
+                checked={isChecked} 
+                onChange={handleCheckboxChange} 
+                />
+                    <label htmlFor="terms">
+                        Acepto los 
+                        <span onClick={handleTermsClick} style={{color: 'blue', cursor: 'pointer'}}>
+                            {' '}términos y condiciones
+                        </span>
+                    </label>
+                    {showTerms && 
+                    <dialog open>
+                        <div className='relative'>
+                        <p className='text-2xl mt-5 font-bold mb-4 text-center'>TERMINOS Y CONDICIONES DEL USO DEL GIMNASIO</p>
+                        <button onClick={handleCloseClick} className='close-button shadow--2xl absolute right-5 top-0'>X</button>
+                        </div>
+                        <ul className='leading-5 p-5 text-justify w-full h-auto text-slate-800 marker:text-slate-50'>
+                        <li>
+                            Este documento tiene como objetivo establecer claramente las responsabilidades y obligaciones tanto del gimnasio como de sus usuarios al participar en actividades relacionadas con la escalada en las instalaciones. Es fundamental que todos los usuarios del gimnasio de escalada lean y comprendan este deslinde de responsabilidades antes de participar en cualquier actividad. La participación en las actividades del gimnasio implica la aceptación de los términos y condiciones establecidos a continuación.
 
-export default PersonalDataForm;
+                            1. Condiciones Físicas y Médicas:
+
+                                Los usuarios deben estar en buena forma física y gozar de buena salud para participar en actividades de escalada.
+                                Los usuarios son responsables de informar al personal del gimnasio sobre cualquier condición médica preexistente que pueda afectar su capacidad para participar de manera segura.
+
+                            2. Instrucción y Supervisión:
+
+                                Todos los usuarios deben participar en las sesiones de orientación y recibir instrucciones adecuadas antes de realizar actividades de escalada.
+                                Los usuarios son responsables de seguir las indicaciones del personal del gimnasio y de utilizar el equipo de seguridad proporcionado correctamente.
+
+                            3. Equipo de Seguridad:
+
+                                El gimnasio proporciona equipo de seguridad estándar, como arneses y cascos, que debe ser utilizado en todo momento durante las actividades de escalada.
+                                Los usuarios son responsables de inspeccionar su equipo antes de cada uso y de informar al personal del gimnasio sobre cualquier equipo defectuoso.
+
+                            4. Riesgos y Peligros:
+
+                                Los usuarios reconocen que la escalada es una actividad intrínsecamente riesgosa y pueden ocurrir lesiones.
+                                Los usuarios asumen todos los riesgos asociados con la escalada y liberan al gimnasio, su personal y sus propietarios de cualquier responsabilidad por lesiones, daños o pérdidas.
+
+                            5. Menores de Edad:
+
+                                Los padres o tutores legales son responsables de supervisar a los menores de edad mientras participan en actividades de escalada.
+                                Los padres o tutores legales deben firmar este deslinde de responsabilidades en nombre de los menores de edad.
+
+                            6. Mantenimiento y Seguridad del Gimnasio:
+
+                                El gimnasio se compromete a mantener sus instalaciones y equipo en condiciones seguras y operativas.
+                                Los usuarios deben informar de inmediato al personal del gimnasio sobre cualquier preocupación relacionada con la seguridad o el mantenimiento.
+
+                            Al participar en actividades de escalada en este gimnasio, los usuarios reconocen haber leído, comprendido y aceptado este deslinde de responsabilidades. Además, comprenden que este documento tiene validez legal y es solo un acuerdo formal entre el usuario y el gimnasio.
+                        </li>
+                        </ul>
+                        <br />
+                    </dialog>}
+                </div>
+        </div>
+        </div>
+        </>
+        );
+    };
+    
+    export default PersonalDataForm;
+    
