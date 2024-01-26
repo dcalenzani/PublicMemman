@@ -36,7 +36,7 @@ const MembersPage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className='flex flex-row'>
+                <div className='flex flex-row [&>a]:mb-24 [&>a]:md:mb-2'>
                     <a href='./Membresias/Nuevos' className=' bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Nuevo ingreso</a>
                     <a href='./Membresias/NuevosMan' className=' bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Ingreso rápido</a>
                 </div>

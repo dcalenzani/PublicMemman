@@ -12,7 +12,6 @@ const MembersPage: React.FC = () => {
 
     return (
         <div className='w-screen h-screen flex'>
-
             <div className='fixed flex flex-col justify-center items-center space-y-10 h-full'>
                 <div>
                     <h1 className='text-3xl bg-zinc-800 p-3'>Profesores</h1>
@@ -20,15 +19,15 @@ const MembersPage: React.FC = () => {
                         <Table id='dni' endpoint='/api/teacher' dataKey='teachers' className='w-screen' onIdSelected={handleIdSelected} />
                     </div>
                 </div>
-                <div className='flex flex-row'>
-                    {/*
+                <div className='flex flex-row [&>a]:mb-24 [&>a]:md:mb-2 '>
                     <a 
                     href={`/Administracion/Profesores/Actualizar?id=${selectedId}`} 
-                    className='bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>
+                    className='bg-yellow-300 mx-2 p-2 rounded-md text-slate-900'>
                     Actualizar ingreso
                     </a>
+                    {/*
                     */}
-                    <a href='./Profesores/Nuevos' className='bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Nuevo ingreso</a>
+                    <a href='./Profesores/Nuevos' className='bg-yellow-300  mx-2 p-2 rounded-md text-slate-900 '>Nuevo ingreso</a>
                 </div>
             </div>
             <Hamburguer>
