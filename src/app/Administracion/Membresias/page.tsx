@@ -26,7 +26,7 @@ const MembersPage: React.FC = () => {
             <div className="flex flex-col justify-center items-center space-y-10 h-full my-10">
                 <div className=''>
                     <div className='flex flex-row justify-between'>
-                        <h1 className='text-3xl bg-zinc-800 p-3'>Membresias</h1>
+                        <h1 className='text-3xl bg-zinc-800 p-3 w-screen'>Membresias</h1>
                         {/* 
                         <a href={ `/Administracion/Membresias/Actualizar?users_id=${(selectedId)}`} className='bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Actualizar Miembro</a>
                         */}

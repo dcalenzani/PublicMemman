@@ -14,7 +14,7 @@ export default function Home() {
           height={80} />
           <p className='m-2'> Memman: Administrador de miembros </p>
 
-            <Button href="/Administracion" variant="contained" className='m-2'>Ingresar</Button>
+            <Button href="/Administracion/Programa" variant="contained" className='m-2'>Ingresar</Button>
         </div>
 
       </div>
