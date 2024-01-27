@@ -258,7 +258,7 @@ const PersonalDataForm = () => {
                         <option value="membresia">Membresía</option>
                     </select>
                 </label>
-                <div className='my-5 text-zinc-800'>
+                <div className='my-5 text-zinc-800 z-50'>
                 <div className='flex flex-row space-x-4 place-items-center my-10 mx-5 border rounded-md bg-gray-200 p-2'>
                 <input 
                 type="checkbox" 
@@ -278,48 +278,46 @@ const PersonalDataForm = () => {
                             <p className='text-2xl mt-5 font-bold mb-4 text-center'>TERMINOS Y CONDICIONES DEL USO DEL GIMNASIO</p>
                             <button onClick={handleCloseClick} className='close-button shadow--2xl text-3xl absolute right-2 top-0'>X</button>
                             </div>
-                            <ul className='leading-5 p-5 text-justify w-full h-auto text-slate-800 marker:text-slate-50'>
-                            <li>
+                            <p className='leading-5 p-5 text-justify w-full h-auto text-slate-800 marker:text-slate-50 whitespace-pre-line [&>strong]:text-lg'>
                                 Este documento tiene como objetivo establecer claramente las responsabilidades y obligaciones tanto del gimnasio como de sus usuarios al participar en actividades relacionadas con la escalada en las instalaciones. Es fundamental que todos los usuarios del gimnasio de escalada lean y comprendan este deslinde de responsabilidades antes de participar en cualquier actividad. La participación en las actividades del gimnasio implica la aceptación de los términos y condiciones establecidos a continuación.
-
-                                1. Condiciones Físicas y Médicas:
-
-                                    Los usuarios deben estar en buena forma física y gozar de buena salud para participar en actividades de escalada.
-                                    Los usuarios son responsables de informar al personal del gimnasio sobre cualquier condición médica preexistente que pueda afectar su capacidad para participar de manera segura.
-
-                                2. Instrucción y Supervisión:
-
-                                    Todos los usuarios deben participar en las sesiones de orientación y recibir instrucciones adecuadas antes de realizar actividades de escalada.
-                                    Los usuarios son responsables de seguir las indicaciones del personal del gimnasio y de utilizar el equipo de seguridad proporcionado correctamente.
-
-                                3. Equipo de Seguridad:
-
-                                    El gimnasio proporciona equipo de seguridad estándar, como arneses y cascos, que debe ser utilizado en todo momento durante las actividades de escalada.
-                                    Los usuarios son responsables de inspeccionar su equipo antes de cada uso y de informar al personal del gimnasio sobre cualquier equipo defectuoso.
-
-                                4. Riesgos y Peligros:
-
-                                    Los usuarios reconocen que la escalada es una actividad intrínsecamente riesgosa y pueden ocurrir lesiones.
-                                    Los usuarios asumen todos los riesgos asociados con la escalada y liberan al gimnasio, su personal y sus propietarios de cualquier responsabilidad por lesiones, daños o pérdidas.
-
-                                5. Menores de Edad:
-
-                                    Los padres o tutores legales son responsables de supervisar a los menores de edad mientras participan en actividades de escalada.
-                                    Los padres o tutores legales deben firmar este deslinde de responsabilidades en nombre de los menores de edad.
-
-                                6. Mantenimiento y Seguridad del Gimnasio:
-
-                                    El gimnasio se compromete a mantener sus instalaciones y equipo en condiciones seguras y operativas.
-                                    Los usuarios deben informar de inmediato al personal del gimnasio sobre cualquier preocupación relacionada con la seguridad o el mantenimiento.
-
-                                Al participar en actividades de escalada en este gimnasio, los usuarios reconocen haber leído, comprendido y aceptado este deslinde de responsabilidades. Además, comprenden que este documento tiene validez legal y es solo un acuerdo formal entre el usuario y el gimnasio.
-                            </li>
-                            </ul>
+                                {'\n'}{'\n'}
+                                <strong>1. Condiciones Físicas y Médicas:</strong>
+                                {'\n'}{'\n'}
+                                Los usuarios deben estar en buena forma física y gozar de buena salud para participar en actividades de escalada.
+                                Los usuarios son responsables de informar al personal del gimnasio sobre cualquier condición médica preexistente que pueda afectar su capacidad para participar de manera segura.
+                                {'\n'}{'\n'}
+                                <strong>2. Instrucción y Supervisión:</strong>
+                                {'\n'}{'\n'}
+                                Todos los usuarios deben participar en las sesiones de orientación y recibir instrucciones adecuadas antes de realizar actividades de escalada.
+                                Los usuarios son responsables de seguir las indicaciones del personal del gimnasio y de utilizar el equipo de seguridad proporcionado correctamente.
+                                {'\n'}{'\n'}
+                                <strong>3. Equipo de Seguridad:</strong>
+                                {'\n'}{'\n'}
+                                El gimnasio proporciona equipo de seguridad estándar, como arneses y cascos, que debe ser utilizado en todo momento durante las actividades de escalada.
+                                Los usuarios son responsables de inspeccionar su equipo antes de cada uso y de informar al personal del gimnasio sobre cualquier equipo defectuoso.
+                                {'\n'}{'\n'}
+                                <strong>4. Riesgos y Peligros:</strong>
+                                {'\n'}{'\n'}
+                                Los usuarios reconocen que la escalada es una actividad intrínsecamente riesgosa y pueden ocurrir lesiones.
+                                Los usuarios asumen todos los riesgos asociados con la escalada y liberan al gimnasio, su personal y sus propietarios de cualquier responsabilidad por lesiones, daños o pérdidas.
+                                {'\n'}{'\n'}
+                                <strong>5. Menores de Edad:</strong>
+                                {'\n'}{'\n'}
+                                Los padres o tutores legales son responsables de supervisar a los menores de edad mientras participan en actividades de escalada.
+                                Los padres o tutores legales deben firmar este deslinde de responsabilidades en nombre de los menores de edad.
+                                {'\n'}{'\n'}
+                                <strong>6. Mantenimiento y Seguridad del Gimnasio:</strong>
+                                {'\n'}{'\n'}
+                                El gimnasio se compromete a mantener sus instalaciones y equipo en condiciones seguras y operativas.
+                                Los usuarios deben informar de inmediato al personal del gimnasio sobre cualquier preocupación relacionada con la seguridad o el mantenimiento.
+                                {'\n'}{'\n'}
+                                <strong>Al participar en actividades de escalada en este gimnasio, los usuarios reconocen haber leído, comprendido y aceptado este deslinde de responsabilidades. Además, comprenden que este documento tiene validez legal y es solo un acuerdo formal entre el usuario y el gimnasio.</strong>
+                            </p>
                             <br />
                         </dialog>}
                 </div>
                 </div>
-                <button type="submit" disabled={!isChecked} className='bg-yellow-300 text-slate-900 p-2 rounded-sm mb-10 disabled:opacity-60'>Submit</button>
+                <button type="submit" disabled={!isChecked} className='bg-yellow-300 z-1 text-slate-900 p-2 rounded-sm mb-10 disabled:opacity-60'>Submit</button>
             </form>
             {isUnder18 && (
                 <dialog className='mt-10 p-3 rounded-sm bg-slate-800 backdrop-filter backdrop-blur-sm' ref={dialogUnder}>
