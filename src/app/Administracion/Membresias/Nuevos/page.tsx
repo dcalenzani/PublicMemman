@@ -53,25 +53,21 @@ const PersonalDataForm = () => {
     });
 
     const [feedback, setFeedback] = useState('');
-    const [accepted, setAccepted] = useState(false);
     
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [birthDate, setbirthDate] = useState('');
     const [id, setId] = useState('');
-    const [selectedOption, setSelectedOption] = useState('clases');
 
     const [parentName, setParentName] = useState('');
     const [parentEmail, setParentEmail] = useState(''); 
     const [parentPhone, setParentPhone] = useState('');
     const [parentBirthdate, setParentBirthdate] = useState('');
     const [parentId, setParentId] = useState('');
-    const [parentRole, setParentRole] = useState('3');
     
     const [emergencyName, setEmergencyName] = useState('');
     const [emergencyPhone, setEmergencyPhone] = useState('');
-    const [users_id, setUsersId] = useState('');
 
     const [isChecked, setChecked] = useState(false);
     const [showTerms, setShowTerms] = useState(false);
@@ -105,7 +101,7 @@ const PersonalDataForm = () => {
             phone: phone,
             birth_date: birthDate,
             id: id,
-            roles_id: (selectedOption === 'clases' ? 1 : 2),
+            roles_id: 1,
         };
 
         setFormData(newFormData);
@@ -148,7 +144,7 @@ const PersonalDataForm = () => {
             phone: parentPhone,
             birth_date: parentBirthdate,
             id: parentId,
-            roles_id: 3,
+            roles_id: 2,
         };
 
         setparentFormData(formDataParent);
@@ -232,6 +228,11 @@ const PersonalDataForm = () => {
                 </label>
                 <br />
                 <label>
+                    Dni:
+                    <input type="text" value={id} onChange={(e) => setId(e.target.value)} className='text-slate-950' required/>
+                </label>
+                <br />
+                <label>
                     Email:
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className='text-slate-950' required/>
                 </label>
@@ -246,18 +247,6 @@ const PersonalDataForm = () => {
                     <input type="date" value={birthDate} onChange={(e) => setbirthDate(e.target.value)} className='text-slate-950' required/>
                 </label>
                 <br />
-                <label>
-                    id:
-                    <input type="text" value={id} onChange={(e) => setId(e.target.value)} className='text-slate-950' required/>
-                </label>
-                <br />
-                <label>
-                    Selecciona una opción:
-                    <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)} className='text-slate-950'>
-                        <option value="clases">Clases</option>
-                        <option value="membresia">Membresía</option>
-                    </select>
-                </label>
                 <div className='my-5 text-zinc-800 z-50'>
                 <div className='flex flex-row space-x-4 place-items-center my-10 mx-5 border rounded-md bg-gray-200 p-2'>
                 <input 
@@ -332,6 +321,11 @@ const PersonalDataForm = () => {
                             </label>
                             <br />
                             <label>
+                                Dni:
+                                <input type="text" value={parentId} onChange={(e) => setParentId(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br />
+                            <label>
                                 Email:
                                 <input type="email" value={parentEmail} onChange={(e) => setParentEmail(e.target.value)} className='text-slate-950' required/>
                             </label>
@@ -344,11 +338,6 @@ const PersonalDataForm = () => {
                             <label>
                                 Fecha de Nac:
                                 <input type="date" value={parentBirthdate} onChange={(e) => setParentBirthdate(e.target.value)} className='text-slate-950' required/>
-                            </label>
-                            <br />
-                            <label>
-                                id:
-                                <input type="text" value={parentId} onChange={(e) => setParentId(e.target.value)} className='text-slate-950' required/>
                             </label>
                             <br />
                             <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-sm'>Submit</button>
