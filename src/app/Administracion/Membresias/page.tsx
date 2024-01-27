@@ -23,7 +23,7 @@ const MembersPage: React.FC = () => {
 
     return (
         <div className='w-screen h-screen'>
-            <div className="flex flex-col justify-center items-center space-y-10 h-full my-10">
+            <div className="flex flex-col justify-center items-center space-y-10 h-full mt-48 md:mt-5">
                 <div className=''>
                     <div className='flex flex-row justify-between'>
                         <h1 className='text-3xl bg-zinc-800 p-3 w-screen'>Membresias</h1>
@@ -36,9 +36,9 @@ const MembersPage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className='flex flex-row [&>a]:mb-24 [&>a]:md:mb-2'>
-                    <a href='./Membresias/Nuevos' className=' bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Nuevo ingreso</a>
-                    <a href='./Membresias/NuevosMan' className=' bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Ingreso rápido</a>
+                <div className='flex flex-row [&>a]:mb-48 [&>a]:md:mb-2'>
+                    <a href='./Membresias/Nuevos' className=' bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Deslinde de Responsabilidades</a>
+                    <a href='./Membresias/NuevosMan' className=' bg-yellow-300 m-2 p-2 rounded-md text-slate-900'>Ingreso de Miembros</a>
                 </div>
 
             </div>

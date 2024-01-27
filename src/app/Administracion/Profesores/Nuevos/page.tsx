@@ -110,7 +110,7 @@ const PersonalDataForm = () => {
             if (TeacherResponse.status === 200) {
                 setFeedbackPayment('Medio de pago ingresado correctamente');
             } else {
-                setFeedbackPayment('Error al el medio de pago');
+                setFeedbackPayment('Error al ingresar el medio de pago');
             }
             console.log(TeacherResponse);
         } catch (error) {
