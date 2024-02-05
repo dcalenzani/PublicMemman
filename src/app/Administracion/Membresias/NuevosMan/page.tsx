@@ -6,7 +6,8 @@ const PersonalDataForm = () => {
  
     type FormData = {
         id: string;
-        fullname: string;
+        firstname: string;
+        lastname: string;
         email: string;
         phone: string;
         birth_date: string;
@@ -25,7 +26,8 @@ const PersonalDataForm = () => {
     };
 
     const [formData, setFormData] = useState<FormData>({
-        fullname: '',
+        firstname: '',
+        lastname: '',
         email: '',
         phone: '',
         birth_date: '',
@@ -34,7 +36,8 @@ const PersonalDataForm = () => {
     });
 
     const [parentData, setparentFormData] = useState<FormData>({
-        fullname: '',
+        firstname: '',
+        lastname: '',
         email: '',
         phone: '',
         birth_date: '',
@@ -57,12 +60,14 @@ const PersonalDataForm = () => {
     const [feedbackChildren, setFeedbackChildren] = useState('');
 
     const [name, setName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [birthDate, setbirthDate] = useState('');
     const [id, setId] = useState('');
 
     const [parentName, setParentName] = useState('');
+    const [parentLastName, setParentLastName] = useState('');
     const [parentEmail, setParentEmail] = useState(''); 
     const [parentPhone, setParentPhone] = useState('');
     const [parentBirthdate, setParentBirthdate] = useState('');
@@ -83,7 +88,8 @@ const PersonalDataForm = () => {
         e.preventDefault();
 
         const newFormData: FormData = {
-            fullname: name,
+            firstname: name,
+            lastname: lastName,
             email: email,
             phone: phone,
             birth_date: birthDate,
@@ -119,7 +125,8 @@ const PersonalDataForm = () => {
         e.preventDefault();
         
         const formDataParent = {
-            fullname: parentName,
+            firstname: parentName,
+            lastname: parentLastName,
             email: parentEmail,
             phone: parentPhone,
             birth_date: parentBirthdate,
@@ -218,8 +225,13 @@ const PersonalDataForm = () => {
                     </label>
                     <br />
                     <label>
-                        Nombres Completos:
+                        Nombres:
                         <input type="text" value={name} onChange={(e) => setName(e.target.value)} className='text-slate-950' required/>
+                    </label>
+                    <br />
+                    <label>
+                        Apellidos:
+                        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} className='text-slate-950' required/>
                     </label>
                     <br />
                     <label>
@@ -254,10 +266,14 @@ const PersonalDataForm = () => {
                             </label>
                             <br />
                             <label>
-                                Nombres Completos:
+                                Nombres del Apoderado:
                                 <input type="text" value={parentName} onChange={(e) => setParentName(e.target.value)} className='text-slate-950' required/>
                             </label>
                             <br />
+                            <label>
+                                Apellidos del Apoderado:
+                                <input type="text" value={parentLastName} onChange={(e) => setParentLastName(e.target.value)} className='text-slate-950' required/>
+                            </label>
                             <label>
                                 Email:
                                 <input type="email" value={parentEmail} onChange={(e) => setParentEmail(e.target.value)} className='text-slate-950' required/>

@@ -5,7 +5,8 @@ import Hamburguer from '@/app/components/HamburguerMenu';
 const PersonalDataForm = () => {
 
     type UserForm = {
-        fullname: string;
+        firstname: string;
+        lastname: string;
         email: string;
         phone: string;
         birth_date: string;
@@ -38,7 +39,8 @@ const PersonalDataForm = () => {
     }, []);
 
     const [userForm, setUserForm] = useState<UserForm>({
-        fullname: '',
+        firstname: '',
+        lastname: '',
         email: '',
         phone: '',
         birth_date: '',
@@ -51,7 +53,8 @@ const PersonalDataForm = () => {
         payment_method: '',
     }); 
 
-    const [fullname, setName] = useState('');
+    const [firstName, setName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [birthdate, setbirthDate] = useState('');
@@ -64,7 +67,8 @@ const PersonalDataForm = () => {
         e.preventDefault();
         
         const userForm:UserForm = {
-            fullname: fullname,
+            firstname: firstName,
+            lastname: lastName,
             email: email,
             phone: phone,
             birth_date: birthdate,
@@ -130,7 +134,12 @@ const PersonalDataForm = () => {
                 <form onSubmit={handleSubmitTeacher} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-700 [&>input]:text-slate-950 [&>label]:px-2 md:mt-4 mx-4'>
                     <label>
                         Nombre:
-                        <input type="text" value={fullname} onChange={(e) => setName(e.target.value)} className='text-slate-950' required/>
+                        <input type="text" value={firstName} onChange={(e) => setName(e.target.value)} className='text-slate-950' required/>
+                    </label>
+                    <br />
+                    <label>
+                        Apellido:
+                        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} className='text-slate-950' required/>
                     </label>
                     <br />
                     <label>

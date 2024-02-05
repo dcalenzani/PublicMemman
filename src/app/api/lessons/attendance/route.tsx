@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     attendee = await sql`
     SELECT 
       student_attendance.id as id,
-      users.fullname as Estudiante,
+      CONCAT(users.firstname, ' ', users.lastname) as Estudiante,
       CASE 
         WHEN student_attendance.attendance THEN 'asistio'
         ELSE 'no asistio'
@@ -30,4 +30,4 @@ export async function GET(request: Request) {
 
   return NextResponse.json({ attendee: attendee.rows }, { status: 200 });
 
-  }
+}

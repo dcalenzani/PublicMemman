@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     if (roles_id) {
         members = await sql`
         SELECT 
-            fullname as nombre,
+            CONCAT(firstname, ' ', lastname) as nombre,
             product_name as producto,
             email,
             phone as Tel,
@@ -26,8 +26,8 @@ export async function GET(request: Request) {
     } else if (users_id) {
         members = await sql`
         SELECT 
-            fullname as nombre,
-            product
+            CONCAT(firstname, ' ', lastname) as nombre,
+            product,
             email,
             phone as Tel,
             TO_CHAR(membership.entry_date, 'YYYY-MM-DD') as Ingreso,
@@ -39,8 +39,8 @@ export async function GET(request: Request) {
     } else {
         members = await sql`
         SELECT 
-            fullname as nombre,
-            product
+            CONCAT(firstname, ' ', lastname) as nombre,
+            product,
             email,
             phone as Tel,
             TO_CHAR(membership.entry_date, 'YYYY-MM-DD') as Ingreso,

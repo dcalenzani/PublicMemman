@@ -9,8 +9,9 @@ export async function GET(request: Request) {
     if (roles_id) {
         members = await sql`
         SELECT
-            fullname as Nombre,
-            email, phone as Tel,
+            CONCAT(firstname, ' ', lastname) as nombre,
+            email, 
+            phone as Tel,
             TO_CHAR(birth_date, 'DD-MM-YYYY') as Nac,
             roles.descr as Rol,
             users.id as dni,
@@ -26,7 +27,7 @@ export async function GET(request: Request) {
     } else if (users_id) {
         members = await sql`
         SELECT
-            fullname as Nombre,
+            CONCAT(firstname, ' ', lastname) as nombre,
             email,
             phone as Tel,
             TO_CHAR(birth_date, 'DD-MM-YYYY') as Nac,
@@ -39,7 +40,7 @@ export async function GET(request: Request) {
     } else {
         members = await sql
         `SELECT
-            fullname as Nombre,
+            CONCAT(firstname, ' ', lastname) as nombre,
             email,
             phone as Tel,
             TO_CHAR(birth_date, 'DD-MM-YYYY') as Nac,

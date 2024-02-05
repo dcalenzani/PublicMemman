@@ -8,36 +8,36 @@ export async function GET(request: Request) {
     let teachers;
 
     if (id) {
-    teachers = await sql`
-    SELECT 
-    users.id as DNI,
-    users.fullname as Nombre,
-    TO_CHAR(users.birth_date, 'DD-MM-YYYY') as "Fecha de nacimiento",
-    users.phone as Telefono,
-    users.email as Email,
-    payment_method.descr as "Metodo de pago",
-    comments as Comentarios
-    FROM climbing_gym.worker 
-      LEFT JOIN climbing_gym.users 
-          ON worker.users_id = users.id 
-      LEFT JOIN climbing_gym.payment_method
-          ON worker.payment_method = payment_method.id
-    WHERE users_id = ${id}
-    ;
+      teachers = await sql`
+        SELECT 
+          users.id as DNI,
+          CONCAT(users.firstname, ' ', users.lastname) as Nombre,
+          TO_CHAR(users.birth_date, 'DD-MM-YYYY') as "Fecha de nacimiento",
+          users.phone as Telefono,
+          users.email as Email,
+          payment_method.descr as "Metodo de pago",
+          comments as Comentarios
+        FROM climbing_gym.worker 
+          LEFT JOIN climbing_gym.users 
+            ON worker.users_id = users.id 
+          LEFT JOIN climbing_gym.payment_method
+            ON worker.payment_method = payment_method.id
+        WHERE users_id = ${id};
       `;
     } else {
-    teachers = await sql`
-    SELECT 
-        users.id as DNI,
-        users.fullname as Nombre,
-        TO_CHAR(users.birth_date, 'DD-MM-YYYY') as "Fecha de nacimiento",
-        users.phone as Telefono, email as Email,
-        payment_method.descr as "Metodo de pago"
-    FROM climbing_gym.worker 
-      LEFT JOIN climbing_gym.users 
-          ON worker.users_id = users.id 
-      LEFT JOIN climbing_gym.payment_method
-          ON worker.payment_method = payment_method.id
+      teachers = await sql`
+        SELECT 
+          users.id as DNI,
+          CONCAT(users.firstname, ' ', users.lastname) as Nombre,
+          TO_CHAR(users.birth_date, 'DD-MM-YYYY') as "Fecha de nacimiento",
+          users.phone as Telefono,
+          users.email as Email,
+          payment_method.descr as "Metodo de pago"
+        FROM climbing_gym.worker 
+          LEFT JOIN climbing_gym.users 
+            ON worker.users_id = users.id 
+          LEFT JOIN climbing_gym.payment_method
+            ON worker.payment_method = payment_method.id;
       `;
     }
     return NextResponse.json({ teachers: teachers.rows }, { status: 200 });

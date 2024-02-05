@@ -5,7 +5,8 @@ export async function GET(request: Request) {
     try {
         const url = new URL(request.url);
         const id = url.searchParams.get('id');
-        const fullname = url.searchParams.get('fullname');
+        const firstname = url.searchParams.get('firstname');
+        const lastname = url.searchParams.get('lastname');
         const birth_date = url.searchParams.get('birth_date');
         const phone = url.searchParams.get('phone');
         const email = url.searchParams.get('email');
@@ -13,13 +14,14 @@ export async function GET(request: Request) {
 
         let teachers;
 
-        if (!id || !fullname || !birth_date || !phone || !email || !payment_method) {
+        if (!id || !firstname || !lastname || !birth_date || !phone || !email || !payment_method) {
             throw new Error('Users_id must be provided.');
         }
         await sql`
             UPDATE climbing_gym.users
             SET
-                fullname = ${fullname},
+                firstname = ${firstname},
+                lastname = ${lastname},
                 birth_date = ${birth_date},
                 phone = ${phone},
                 email = ${email}

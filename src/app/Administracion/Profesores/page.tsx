@@ -2,7 +2,7 @@
 import Hamburguer from '@/app/components/HamburguerMenu';
 import React, {useState, useEffect} from 'react';
 import Table from '@/app/components/Table';
-import { Snackbar } from '@mui/material';
+import { Modal, Snackbar } from '@mui/material';
 import { AlertCircle } from 'react-feather';
 
 const MembersPage: React.FC = () => {
@@ -29,6 +29,10 @@ const MembersPage: React.FC = () => {
                 location.reload();
             }, 1000);
         }
+    };
+
+    const handleModal = (id: string | null) => {
+        setSelectedId(id);
     };
 
     return (
@@ -72,8 +76,18 @@ const MembersPage: React.FC = () => {
                         onIdSelected={handleIdSelected}
                         deleteClick={handleDelete}
                         newElementClick={() => window.location.replace('./Profesores/Nuevos')}
-                        OnRowDoubleClick={() => window.location.replace(`./Profesores/Actualizar?id=${selectedId}`)}
+                        OnRowDoubleClick={handleModal}
                     />
+                    <Modal
+                        open={Boolean(selectedId)}
+                        onClose={() => setSelectedId(null)}
+                        aria-labelledby='modal-modal-title'
+                        aria-describedby='modal-modal-description'
+                    >
+                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-lg w-1/2">
+                            <p className='text-zinc-900'>Modulo en construccion</p>
+                        </div>
+                    </Modal>
                     <div className='flex flex-row'>
                         <a href='./Profesores/Nuevos' className='bg-yellow-300 mx-2 p-2 rounded-md text-slate-900 '>Nuevo ingreso</a>
                     </div>

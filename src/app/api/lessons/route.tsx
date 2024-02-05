@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
- 
+
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
         lesson.id as id,
         lesson.lesson_date::TIME as hora, 
         TO_CHAR(lesson.duration, 'HH24:MI') AS duracion,
-        users.fullname AS Profesor,
+        CONCAT(users.firstname, ' ', users.lastname) AS Profesor,
         COUNT(DISTINCT student_attendance.student_id) AS Alumnos
       FROM 
         climbing_gym.lesson
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
         lesson.lesson_date::TIME as lesson_time, 
         lesson.lesson_date::DATE as lesson_date,
         TO_CHAR(lesson.duration, 'HH24:MI') AS duration,
-        users.fullname AS Profesor
+        CONCAT(users.firstname, ' ', users.lastname) AS Profesor
       FROM 
         climbing_gym.lesson
       INNER JOIN 
@@ -55,7 +55,7 @@ export async function GET(request: Request) {
       TO_CHAR(lesson.lesson_date::DATE, 'DD-MM-YYYY') as lesson_date,
       lesson.lesson_date::TIME as lesson_time,
       TO_CHAR(lesson.duration, 'HH24:MI') AS duration,
-      users.fullname as teacher
+      CONCAT(users.firstname, ' ', users.lastname) AS teacher
       FROM climbing_gym.lesson
       INNER JOIN climbing_gym.worker ON lesson.teacher_id = worker.users_id
       INNER JOIN climbing_gym.users ON worker.users_id = users.id
@@ -67,7 +67,7 @@ export async function GET(request: Request) {
       lesson.lesson_date::DATE as fecha,
       lesson.lesson_date::TIME as hora, 
       TO_CHAR(lesson.duration, 'HH24:MI') AS duracion,
-      users.fullname AS Profesor
+      CONCAT(users.firstname, ' ', users.lastname) AS Profesor
       FROM 
           climbing_gym.lesson
       INNER JOIN 

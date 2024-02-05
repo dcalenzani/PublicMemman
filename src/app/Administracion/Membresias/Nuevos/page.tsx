@@ -5,7 +5,8 @@ const PersonalDataForm = () => {
  
     type FormData = {
         id: string;
-        fullname: string;
+        firstname: string;
+        lastname: string;
         email: string;
         phone: string;
         birth_date: string;
@@ -24,7 +25,8 @@ const PersonalDataForm = () => {
     };
 
     const [formData, setFormData] = useState<FormData>({
-        fullname: '',
+        firstname: '',
+        lastname: '',
         email: '',
         phone: '',
         birth_date: '',
@@ -33,7 +35,8 @@ const PersonalDataForm = () => {
     });
 
     const [parentData, setparentFormData] = useState<FormData>({
-        fullname: '',
+        firstname: '',
+        lastname: '',
         email: '',
         phone: '',
         birth_date: '',
@@ -55,12 +58,14 @@ const PersonalDataForm = () => {
     const [feedback, setFeedback] = useState('');
     
     const [name, setName] = useState('');
+    const [lastname, setLastname] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [birthDate, setbirthDate] = useState('');
     const [id, setId] = useState('');
 
     const [parentName, setParentName] = useState('');
+    const [parentLastname, setParentLastname] = useState('');
     const [parentEmail, setParentEmail] = useState(''); 
     const [parentPhone, setParentPhone] = useState('');
     const [parentBirthdate, setParentBirthdate] = useState('');
@@ -96,7 +101,8 @@ const PersonalDataForm = () => {
         e.preventDefault();
 
         const newFormData: FormData = {
-            fullname: name,
+            firstname: name,
+            lastname: lastname,
             email: email,
             phone: phone,
             birth_date: birthDate,
@@ -139,7 +145,8 @@ const PersonalDataForm = () => {
         e.preventDefault();
         
         const formDataParent = {
-            fullname: parentName,
+            firstname: parentName,
+            lastname: parentLastname,
             email: parentEmail,
             phone: parentPhone,
             birth_date: parentBirthdate,
@@ -223,10 +230,15 @@ const PersonalDataForm = () => {
             <p className='text-2xl font-bold mb-4 text-center'>REGISTRO DEL ESCALADOR</p> 
             <form onSubmit={handleSubmit} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-700 [&>input]:text-slate-950 [&>label]:px-2 md:mt-4 mx-4'>
                 <label>
-                    Nombre:
+                    Nombres:
                     <input type="text" value={name} onChange={(e) => setName(e.target.value)} className='text-slate-950' required/>
                 </label>
                 <br />
+                <label>
+                    Apellidos:
+                    <input type="text" value={lastname} onChange={(e) => setLastname(e.target.value)} className='text-slate-950' required/>
+                </label>
+                <br/>
                 <label>
                     Dni:
                     <input type="text" value={id} onChange={(e) => setId(e.target.value)} className='text-slate-950' required/>
@@ -300,13 +312,13 @@ const PersonalDataForm = () => {
                                 El gimnasio se compromete a mantener sus instalaciones y equipo en condiciones seguras y operativas.
                                 Los usuarios deben informar de inmediato al personal del gimnasio sobre cualquier preocupación relacionada con la seguridad o el mantenimiento.
                                 {'\n'}{'\n'}
-                                <strong>Al participar en actividades de escalada en este gimnasio, los usuarios reconocen haber leído, comprendido y aceptado este deslinde de responsabilidades. Además, comprenden que este documento tiene validez legal y es solo un acuerdo formal entre el usuario y el gimnasio.</strong>
+                                <strong>Al participar en actividades de escalada en este gimnasio, los usuarios reconocen haber leído, comprendido y aceptado este deslinde de responsabilidades. Además, comprenden que este documento tiene validez legal y es más que solo un acuerdo formal entre el usuario y el gimnasio.</strong>
                             </p>
                             <br />
                         </dialog>}
                 </div>
                 </div>
-                <button type="submit" disabled={!isChecked} className='bg-yellow-300 z-1 text-slate-900 p-2 rounded-sm mb-10 disabled:opacity-60'>Submit</button>
+                <button type="submit" disabled={!isChecked} className='bg-yellow-300 z-1 text-slate-900 p-2 rounded-sm mb-10 disabled:opacity-60'>Registrar</button>
             </form>
             {isUnder18 && (
                 <dialog className='mt-10 p-3 rounded-sm bg-slate-800 backdrop-filter backdrop-blur-sm' ref={dialogUnder}>
@@ -316,10 +328,15 @@ const PersonalDataForm = () => {
                         <div />
                         <form onSubmit={handleSubmitParent} className='flex flex-col space-y-2 space-x-1 [&>label]:grid [&>label]:grid-cols-2 [&>label]:bg-slate-950 [&>label]:px-2 md:mt-4 mx-4'>
                             <label>
-                                Nombre Completo:
+                                Nombres Completo:
                                 <input type="text" value={parentName} onChange={(e) => setParentName(e.target.value)} className='text-slate-950' required/>
                             </label>
                             <br />
+                            <label>
+                                Apellidos:
+                                <input type="text" value={parentLastname} onChange={(e) => setParentLastname(e.target.value)} className='text-slate-950' required/>
+                            </label>
+                            <br/>
                             <label>
                                 Dni:
                                 <input type="text" value={parentId} onChange={(e) => setParentId(e.target.value)} className='text-slate-950' required/>
