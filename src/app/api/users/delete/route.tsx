@@ -11,9 +11,9 @@ export async function DELETE(request: Request) {
     }
 
     await sql`
-        DELETE FROM climbing_gym.student_attendance
+        DELETE FROM climbing_gym.users
         WHERE id = ${id};
     `;
 
-    return NextResponse.json({ message: 'Attendance deleted successfully' }, { status: 200 });
+    return NextResponse.json({ message: 'user deleted successfully' }, { status: 200 });
 }

@@ -53,6 +53,10 @@ const EventFormForm = () => {
                 console.log(userResponse);
             } catch (error) {
                 console.error('Error:', error);
+            } finally {
+                setTimeout(() => {
+                    location.href = '/Administracion/Programa';
+                }, 1000);
             }
             /*window.location.href = '/Administracion/Programa';*/
         };  

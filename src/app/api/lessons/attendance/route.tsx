@@ -12,7 +12,10 @@ export async function GET(request: Request) {
     SELECT 
       student_attendance.id as id,
       users.fullname as Estudiante,
-      student_attendance.attendance as Asistencia,
+      CASE 
+        WHEN student_attendance.attendance THEN 'asistio'
+        ELSE 'no asistio'
+      END as Asistencia,
       student_attendance.justification as Observaciones
      FROM climbing_gym.student_attendance 
      INNER JOIN 

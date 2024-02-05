@@ -1,10 +1,10 @@
 'use client'
 import Hamburguer from '@/app/components/HamburguerMenu';
 import Table from '@/app/components/Table';
+import { Build, Work } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
 
 const AsistenciaForm = () => {
-    
     return (
         <div>
             <Hamburguer>
@@ -24,8 +24,8 @@ const AsistenciaForm = () => {
                     <p>Salir</p>
                 </a>
             </Hamburguer>
-            <div className='flex-col flex my-32 mx-4'>
-                <p className='text-2xl'> PAGINA EN CONSTRUCCION</p>
+            <div className='flex flex-col h-screen justify-center items-center mx-4'>
+                <p className='text-5xl font-bold'> <Build/> PAGINA EN CONSTRUCCION <Build/></p>   
             </div>
         </div>
     );
