@@ -5,6 +5,8 @@ import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import { Snackbar } from '@mui/material';
 import { AlertCircle } from 'react-feather';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 const AsistenciaForm: React.FC = () => {
 
@@ -280,14 +282,18 @@ const AsistenciaForm: React.FC = () => {
                     <h2 id="modal-modal-title" className="text-2xl text-zinc-900 font-bold mb-4">Nueva Asistencia</h2>
                     <p id="modal-modal-description" className="text-zinc-900 mb-4">Seleccione al estudiante para la clase.</p>
                     <form onSubmit={handleSubmit} className='flex flex-col my-8 bg-slate-700 p-10'>
-                        <label className='m-4'>
-                            Alumno:
-                            <select value={student_id} onChange={(e) => setStudent(e.target.value)} className='text-slate-950 mx-4'>
-                                <option value="">Seleccione un estudiante</option>
-                                {students.members.map((student: any) => (
-                                    <option key={student.dni} value={student.dni}>{student.nombre}</option>
-                                ))} 
-                            </select>
+                        <label className='m-4 space-y-2'>
+                            Escriba el nombre o apellidos del alumno:
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={students.members}
+                                getOptionLabel={(option: any) => option.nombre}
+                                style={{ width: 300 }}
+                                onChange={(event: any, newValue: any | null) => {
+                                    setStudent(newValue ? newValue.dni : '');
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Alumno" variant="outlined" className='mt-4 bg-slate-200'/>}
+                            />
                         </label>
                         <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-md'>Submit</button>
                     </form>

@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS payment_method (
 );
 
 CREATE TABLE IF NOT EXISTS users(
-    id INTEGER UNIQUE NOT NULL,
+    id VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) CHECK (birth_date <= current_date - interval '18 years' OR email IS NOT NULL) NOT NULL,
     phone VARCHAR(255) CHECK (birth_date <= current_date - interval '18 years' OR phone IS NOT NULL) NOT NULL,
     firstname VARCHAR(255) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS users(
 /*One to one relationships*/
 CREATE TABLE IF NOT EXISTS membership (
     id SERIAL PRIMARY KEY,
-    users_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    users_id VARCHAR(255) UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     product_id INTEGER REFERENCES product(id) ON DELETE CASCADE,
     entry_date DATE,
     end_date DATE,
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS membership (
 /*One to many relationships*/
 CREATE TABLE IF NOT EXISTS worker (
     id SERIAL PRIMARY KEY,
-    users_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    users_id VARCHAR(255) REFERENCES users(id) ON DELETE CASCADE,
     roles_id INTEGER REFERENCES roles(id) NOT NULL,
     payment_method INTEGER REFERENCES payment_method(id),
     comments VARCHAR(255)
@@ -60,19 +60,19 @@ CREATE TABLE IF NOT EXISTS worker (
 CREATE TABLE IF NOT EXISTS children (
     id SERIAL PRIMARY KEY,
     parent_id INTEGER REFERENCES users(id),
-    users_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+    users_id VARCHAR(255) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS emergency_contact (
     id SERIAL PRIMARY KEY,
-    users_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    users_id VARCHAR(255) REFERENCES users(id) ON DELETE CASCADE,
     fullname VARCHAR(255) NOT NULL,
     phone INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS lesson (
     id SERIAL PRIMARY KEY,
-    teacher_id INTEGER REFERENCES worker(users_id),
+    teacher_id VARCHAR(255) REFERENCES worker(users_id),
     lesson_date TIMESTAMP NOT NULL,
     duration INTERVAL NOT NULL
 );
@@ -88,14 +88,14 @@ CREATE TABLE IF NOT EXISTS special_event (
 CREATE TABLE IF NOT EXISTS event_teachers (
     id SERIAL,
     event_id INTEGER REFERENCES special_event(id) ON DELETE CASCADE,
-    teacher_id INTEGER REFERENCES worker(users_id) ON DELETE CASCADE,
+    teacher_id VARCHAR(255) REFERENCES worker(users_id) ON DELETE CASCADE,
     PRIMARY KEY (event_id, teacher_id)
 );
 
 CREATE TABLE IF NOT EXISTS student_attendance (
     id SERIAL PRIMARY KEY,
     lesson_id INTEGER REFERENCES lesson(id) ON DELETE CASCADE,
-    student_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    student_id VARCHAR(255) REFERENCES users(id) ON DELETE CASCADE,
     attendance BOOLEAN DEFAULT NULL,
     justification VARCHAR(255),
     UNIQUE (lesson_id, student_id)
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS student_attendance (
 
 CREATE TABLE IF NOT EXISTS teacher_hours (
     id SERIAL PRIMARY KEY,
-    teacher_id INTEGER REFERENCES worker(users_id) ON DELETE CASCADE,
+    teacher_id VARCHAR(255) REFERENCES worker(users_id) ON DELETE CASCADE,
     payment_month DATE NOT NULL,
     total_hours INTEGER NOT NULL
 );
