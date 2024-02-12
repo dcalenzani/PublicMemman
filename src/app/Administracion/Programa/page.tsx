@@ -3,7 +3,7 @@
 import Hamburguer from '@/app/components/HamburguerMenu';
 import Table from '@/app/components/Table';
 import { Snackbar } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { AlertCircle } from 'react-feather';
@@ -11,7 +11,6 @@ import { AlertCircle } from 'react-feather';
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
-
 
 const Programa: React.FC = () => {
 
@@ -28,7 +27,15 @@ const Programa: React.FC = () => {
     }
 
     const today = new Date();
-    const [value, onChange] = useState<Value>(today);
+    const [value, onChange] = useState<Value>(() => {
+        const storedDate = localStorage.getItem('selectedDate');
+        return storedDate ? new Date(storedDate) : new Date();
+    });
+
+    useEffect(() => {
+        localStorage.setItem('selectedDate', value instanceof Date ? value.toISOString() : '');
+    }, [value]);
+    
     const formattedDate = value instanceof Date ? value.toISOString().split('T')[0] : '';
     const [feedback, setFeedback] = useState('');
     const [selectedRowData, setSelectedRowData] = useState<RowDataType | null> (null);

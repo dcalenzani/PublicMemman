@@ -278,10 +278,10 @@ const AsistenciaForm: React.FC = () => {
                 aria-labelledby="student-modal-title"
                 aria-describedby="student-modal-description"
                 >
-                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-lg w-1/2">
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-lg w-full max-w-md">
                     <h2 id="modal-modal-title" className="text-2xl text-zinc-900 font-bold mb-4">Nueva Asistencia</h2>
                     <p id="modal-modal-description" className="text-zinc-900 mb-4">Seleccione al estudiante para la clase.</p>
-                    <form onSubmit={handleSubmit} className='flex flex-col my-8 bg-slate-700 p-10'>
+                        <form className="flex flex-col my-8 bg-slate-700 p-10 space-y-5" onSubmit={handleUpdate}>
                         <label className='m-4 space-y-2'>
                             Escriba el nombre o apellidos del alumno:
                             <Autocomplete
@@ -292,8 +292,11 @@ const AsistenciaForm: React.FC = () => {
                                 onChange={(event: any, newValue: any | null) => {
                                     setStudent(newValue ? newValue.dni : '');
                                 }}
-                                renderInput={(params) => <TextField {...params} label="Alumno" variant="outlined" className='mt-4 bg-slate-200'/>}
-                            />
+                                renderInput={(params) => <TextField {...params} 
+                                    label="Alumno"
+                                    variant="outlined"
+                                    className='text-slate-950 mx-4 px-4 w-full max-w-full'/>}
+                                />
                         </label>
                         <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-md'>Submit</button>
                     </form>
