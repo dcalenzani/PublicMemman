@@ -83,7 +83,7 @@ const DataTable: React.FC<DataTableProps> = ({ className, endpoint, dataKey, id,
                 </div>
             </div>
             <DataGrid
-                rows={data.map((item) => ({ ...item, id: item[id] }))}
+                rows={data ? data.map((item) => ({ ...item, id: item[id] })) : []}
                 columns={columns}
                 className={`${className}`}
                 onRowClick={handleRowClick}
