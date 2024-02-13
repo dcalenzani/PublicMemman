@@ -9,7 +9,7 @@ interface HamburguerProps {
 const Hamburguer: React.FC<HamburguerProps> = () => {
 
     const isMdScreen = useMediaQuery({ query: '(min-width: 768px)' });
-    const [isMenuOpen, setMenuOpen] = useState(false); // default to closed menu
+    const [isMenuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
         setMenuOpen(isMdScreen);
@@ -38,7 +38,7 @@ const Hamburguer: React.FC<HamburguerProps> = () => {
                 </a>
 
                 <a
-                    href="javascript:void(0);"
+                    href="#"
                     onClick={toggleMenu}
                     className="text-3xl cursor-pointer mx-2 md:hidden"
                 >

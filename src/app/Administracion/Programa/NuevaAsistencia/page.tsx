@@ -171,7 +171,44 @@ const AsistenciaForm: React.FC = () => {
         }
         console.log(updateForm);
     }
-};
+    };
+
+    const handleNewAttendance = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const attendanceForm: AttendanceForm = {
+            lesson_id: id,
+            student_id: student_id,
+        };
+
+        setAttendanceForm(attendanceForm);
+
+        const fillUserUrlParams = (attendanceForm: any) => {
+            const urlAttendanceParams = new URLSearchParams({
+                lesson_id: attendanceForm.lesson_id,
+                student_id: attendanceForm.student_id,
+            }).toString();
+            return urlAttendanceParams;
+        };
+
+        try {
+            const urlAttendanceParams = fillUserUrlParams(attendanceForm);
+            const userResponse = await fetch(`/api/lessons/attendance/new?${urlAttendanceParams}`);
+            setUrlParams(urlAttendanceParams);
+            if (userResponse.status === 200) {
+                setFeedback('Ingreso exitoso');
+            } else {
+                setFeedback('Error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        }
+        console.log(attendanceForm);          
+    };
 
     const handleDelete = async (selectedId: string | null) => {
         try {
@@ -281,7 +318,7 @@ const AsistenciaForm: React.FC = () => {
                 <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow-lg w-full max-w-md">
                     <h2 id="modal-modal-title" className="text-2xl text-zinc-900 font-bold mb-4">Nueva Asistencia</h2>
                     <p id="modal-modal-description" className="text-zinc-900 mb-4">Seleccione al estudiante para la clase.</p>
-                        <form className="flex flex-col my-8 bg-slate-700 p-10 space-y-5" onSubmit={handleUpdate}>
+                        <form className="flex flex-col my-8 bg-slate-700 p-10 space-y-5" onSubmit={handleNewAttendance}>
                         <label className='m-4 space-y-2'>
                             Escriba el nombre o apellidos del alumno:
                             <Autocomplete
@@ -298,7 +335,7 @@ const AsistenciaForm: React.FC = () => {
                                     className='text-slate-950 mx-4 px-4 w-full max-w-full'/>}
                                 />
                         </label>
-                        <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-md'>Submit</button>
+                        <button type="submit" className='bg-yellow-300 text-slate-900 p-2 rounded-md'>Subir</button>
                     </form>
                     </div>
                 </Modal>
