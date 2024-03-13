@@ -6,19 +6,19 @@ The systems manages users, lessons and special events, while also showing them o
 Management can download reports based on KPI from each month.
 
 ## V.0.01
-    - UI model
-    - DB init.sql
-    - SQL connections to the frontend of the page (performing CRUD operations)
-    - CSV downloads for predefined tables
+- UI model
+- DB init.sql
+- SQL connections to the frontend of the page (performing CRUD operations)
+- CSV downloads for predefined tables
 
 ## Future development
-    - User based access
-    - "Dashboard"
+- User based access
+- "Dashboard"
 
 ## Requirements
-    - NodeJs
-    - NextJs (with Tailwind + Typescript)
-    - PostgreSQL DB somewhere
+- NodeJs
+- NextJs (with Tailwind + Typescript)
+- PostgreSQL DB somewhere
 
 ## Usage
 
