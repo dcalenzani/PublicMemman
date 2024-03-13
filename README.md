@@ -14,3 +14,20 @@ Management can download reports based on KPI from each month.
 ## Future development
     - User based access
     - "Dashboard"
+
+## Requirements
+    - NodeJs
+    - NextJs (with Tailwind + Typescript)
+    - PostgreSQL DB somewhere
+
+## Usage
+
+Run
+```
+git clone https://github.com/dcalenzani/PublicMemman.git
+cd PublicMemman
+npm install
+```
+
+then, setup a .env file following the template
+`DATABASE_URL="postgres://USER:PASSWORD@HOST"`
