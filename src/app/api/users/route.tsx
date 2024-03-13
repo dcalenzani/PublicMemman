@@ -1,5 +1,11 @@
-import { sql } from '@vercel/postgres';
-import { NextResponse, userAgent } from 'next/server';
+import { Pool } from 'pg';
+import { config } from 'dotenv';
+
+config();
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+});
 
 export async function GET(request: Request) {
     const url = new URL(request.url);
@@ -7,7 +13,7 @@ export async function GET(request: Request) {
     const users_id = url.searchParams.get('users_id');
     let members;
     if (roles_id) {
-        members = await sql`
+        members = await pool.query(`
         SELECT
             CONCAT(firstname, ' ', lastname) as nombre,
             email, 
@@ -23,9 +29,9 @@ export async function GET(request: Request) {
             LEFT JOIN climbing_gym.membership ON membership.users_id = users.id
             LEFT JOIN climbing_gym.product ON product.id = membership.product_id
         WHERE roles_id = ${roles_id};
-        `;
+        `);
     } else if (users_id) {
-        members = await sql`
+        members = await pool.query(`
         SELECT
             CONCAT(firstname, ' ', lastname) as nombre,
             email,
@@ -36,9 +42,9 @@ export async function GET(request: Request) {
         FROM climbing_gym.users
             LEFT JOIN climbing_gym.roles ON roles.id = users.roles_id
         WHERE users.id = ${users_id};
-        `;
+        `);
     } else {
-        members = await sql
+        members = await pool.query(
         `SELECT
             CONCAT(firstname, ' ', lastname) as nombre,
             email,
@@ -48,7 +54,7 @@ export async function GET(request: Request) {
             users.id as dni
         FROM climbing_gym.users
             LEFT JOIN climbing_gym.roles ON roles.id = users.roles_id
-        `;
+        `);
     }
-    return NextResponse.json({ members: members.rows }, { status: 200 });
+    return Response.json({ members: members.rows }, { status: 200 });
 }

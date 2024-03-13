@@ -50,8 +50,8 @@ CREATE TABLE IF NOT EXISTS membership (
 /*One to many relationships*/
 CREATE TABLE IF NOT EXISTS worker (
     id SERIAL PRIMARY KEY,
-    users_id VARCHAR(255) REFERENCES users(id) ON DELETE CASCADE,
-    roles_id INTEGER REFERENCES roles(id) NOT NULL,
+    users_id VARCHAR(255) UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    roles_id INTEGER REFERENCES roles(id) ON DELETE CASCADE,
     payment_method INTEGER REFERENCES payment_method(id),
     comments VARCHAR(255)
 );
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS worker (
 /*Many to many relationships*/
 CREATE TABLE IF NOT EXISTS children (
     id SERIAL PRIMARY KEY,
-    parent_id INTEGER REFERENCES users(id),
+    parent_id VARCHAR(255) REFERENCES users(id),
     users_id VARCHAR(255) REFERENCES users(id) ON DELETE CASCADE
 );
 
