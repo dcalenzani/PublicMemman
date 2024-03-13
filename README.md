@@ -1,12 +1,16 @@
 # MEMBERS MANAGER V.0.01
-This repo contains a PostgreSQL database and a frontend NextJs app to run it. The systems manages memberships, lessons, people and payments through its UI, so it can be downloaded for further use by management.
+This repo contains a PostgreSQL database and a frontend NextJs app to run it. You can use any PSQL hosting method, even self-hosting, but you have to set up the .env by yourself. 
+
+The systems manages users, lessons and special events, while also showing them on a UI. 
+
+Management can download reports based on KPI from each month.
 
 ## V.0.01
-    - UI model/sketch implemented and working
-    - DB init.sql first draft completed
-    - Vercel connections for testing made
-
-## FUTURE
+    - UI model
+    - DB init.sql
     - SQL connections to the frontend of the page (performing CRUD operations)
-    - User login
     - CSV downloads for predefined tables
+
+## Future development
+    - User based access
+    - "Dashboard"
