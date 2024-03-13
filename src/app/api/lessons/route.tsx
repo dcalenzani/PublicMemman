@@ -1,5 +1,15 @@
-import { sql } from '@vercel/postgres';
+import { Pool } from 'pg';
 import { NextResponse } from 'next/server';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
 
 export async function GET(request: Request) {
   try {
@@ -9,8 +19,10 @@ export async function GET(request: Request) {
     const id = url.searchParams.get('id');
     let lessons;
 
+    const client = await pool.connect();
+
     if (date) {
-      lessons = await sql`
+      lessons = await client.query(`
       SELECT 
         lesson.id as id,
         lesson.lesson_date::TIME as hora, 
@@ -25,15 +37,15 @@ export async function GET(request: Request) {
         climbing_gym.users ON worker.users_id = users.id
       LEFT JOIN
         climbing_gym.student_attendance ON lesson.id = student_attendance.lesson_id
-      WHERE lesson.lesson_date::DATE = ${date}
+      WHERE lesson.lesson_date::DATE = $1
       GROUP BY
         lesson.id,
         hora,
         duracion,
         Profesor;
-      `;
+      `, [date]);
     } else if (timestamp) { 
-      lessons = await sql`
+      lessons = await client.query(`
       SELECT 
         lesson.id as id,
         lesson.lesson_date::TIME as lesson_time, 
@@ -46,11 +58,11 @@ export async function GET(request: Request) {
           climbing_gym.worker ON lesson.teacher_id = worker.users_id
       INNER JOIN 
       climbing_gym.users ON worker.users_id = users.id
-      WHERE lesson.lesson_date = ${timestamp};
-      `;
+      WHERE lesson.lesson_date = $1;
+      `, [timestamp]);
     } else if (id){
-      lessons = await sql 
-      `SELECT
+      lessons = await client.query(`
+      SELECT
       lesson.id,
       TO_CHAR(lesson.lesson_date::DATE, 'DD-MM-YYYY') as lesson_date,
       lesson.lesson_date::TIME as lesson_time,
@@ -59,9 +71,10 @@ export async function GET(request: Request) {
       FROM climbing_gym.lesson
       INNER JOIN climbing_gym.worker ON lesson.teacher_id = worker.users_id
       INNER JOIN climbing_gym.users ON worker.users_id = users.id
-      WHERE lesson.id = ${id};`;
+      WHERE lesson.id = $1;
+      `, [id]);
     } else {
-      lessons = await sql`
+      lessons = await client.query(`
       SELECT 
       lesson.id as id,
       lesson.lesson_date::DATE as fecha,
@@ -74,8 +87,11 @@ export async function GET(request: Request) {
           climbing_gym.worker ON lesson.teacher_id = worker.users_id
       INNER JOIN 
       climbing_gym.users ON worker.users_id = users.id
-      `;
+      `);
     }
+
+    client.release();
+
     return NextResponse.json({ lessons: lessons.rows }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });

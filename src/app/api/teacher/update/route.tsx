@@ -1,5 +1,12 @@
-import { sql } from '@vercel/postgres';
+import { Pool } from 'pg';
 import { NextResponse } from 'next/server';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+});
 
 export async function GET(request: Request) {
     try {
@@ -17,25 +24,45 @@ export async function GET(request: Request) {
         if (!id || !firstname || !lastname || !birth_date || !phone || !email || !payment_method) {
             throw new Error('Users_id must be provided.');
         }
-        await sql`
-            UPDATE climbing_gym.users
-            SET
-                firstname = ${firstname},
-                lastname = ${lastname},
-                birth_date = ${birth_date},
-                phone = ${phone},
-                email = ${email}
-            WHERE
-                id = ${id};
-            UPDATE climbing_gym.worker
-            SET
-                payment_method = ${payment_method}
-            WHERE
-                users_id = ${id};
-            `;
-        return NextResponse.json({ message: 'Insert successful' }, { status: 200 });
+
+        const client = await pool.connect();
+
+        try {
+            await client.query('BEGIN');
+
+            await client.query(
+                `UPDATE climbing_gym.users
+                SET
+                        firstname = $1,
+                        lastname = $2,
+                        birth_date = $3,
+                        phone = $4,
+                        email = $5
+                WHERE
+                        id = $6`,
+                [firstname, lastname, birth_date, phone, email, id]
+            );
+
+            await client.query(
+                `UPDATE climbing_gym.worker
+                SET
+                        payment_method = $1
+                WHERE
+                        users_id = $2`,
+                [payment_method, id]
+            );
+
+            await client.query('COMMIT');
+
+            return NextResponse.json({ message: 'Insert successful' }, { status: 200 });
+        } catch (error) {
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
     } catch (error) {
-    console.error('Error:', (error as Error).message);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        console.error('Error:', (error as Error).message);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

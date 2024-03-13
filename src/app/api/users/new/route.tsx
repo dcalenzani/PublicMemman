@@ -1,5 +1,12 @@
-import { sql } from '@vercel/postgres';
+import { Pool } from 'pg';
 import { NextResponse } from 'next/server';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
 export async function GET(request: Request) {
   try {
@@ -16,12 +23,26 @@ export async function GET(request: Request) {
       throw new Error('All fields are required');
     }
 
-    await sql`
-      INSERT INTO climbing_gym.users (id, firstname, lastname, email, phone, birth_date, roles_id) 
-      VALUES (${id}, ${firstName}, ${lastName}, ${email}, ${phone}, ${birth_date}, ${roles_id});
-    `;
+    const client = await pool.connect();
 
-    return NextResponse.json({ message: 'Insert successful' }, { status: 200 });
+    try {
+      await client.query('BEGIN');
+
+      await client.query(
+        `INSERT INTO climbing_gym.users (id, firstname, lastname, email, phone, birth_date, roles_id) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [id, firstName, lastName, email, phone, birth_date, roles_id]
+      );
+
+      await client.query('COMMIT');
+
+      return NextResponse.json({ message: 'Insert successful' }, { status: 200 });
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      client.release();
+    }
   } catch (error) {
     console.error('Error:', (error as Error).message);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

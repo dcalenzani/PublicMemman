@@ -1,5 +1,9 @@
-import { sql } from '@vercel/postgres';
+import { Pool } from 'pg';
 import { NextResponse } from 'next/server';
+
+const pool = new Pool({
+    connectionString: 'your_connection_string_here',
+});
 
 export async function DELETE(request: Request) {
     const url = new URL(request.url);
@@ -9,10 +13,20 @@ export async function DELETE(request: Request) {
         return NextResponse.json({ error: 'Missing teacher_id parameter' }, { status: 400 });
     }
 
-    await sql`
-        DELETE FROM climbing_gym.event_teachers
-        WHERE id=${id};
-    `;
+    const client = await pool.connect();
 
-    return NextResponse.json({ message: 'Teacher attendance deleted successfully' }, { status: 200 });
+    try {
+        await client.query('BEGIN');
+
+        await client.query('DELETE FROM climbing_gym.event_teachers WHERE id = $1', [id]);
+
+        await client.query('COMMIT');
+
+        return NextResponse.json({ message: 'Teacher attendance deleted successfully' }, { status: 200 });
+    } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
+    } finally {
+        client.release();
+    }
 }

@@ -1,5 +1,15 @@
-import { sql } from '@vercel/postgres';
+import { Pool } from 'pg';
 import { NextResponse } from 'next/server';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
 
 export async function GET(request: Request) {
     const url = new URL(request.url);
@@ -9,7 +19,14 @@ export async function GET(request: Request) {
     const end_date = url.searchParams.get('end_date');
 
     let products;
-    products = await sql`
-    SELECT * FROM climbing_gym.product`;
+    try {
+        const client = await pool.connect();
+        products = await client.query('SELECT * FROM climbing_gym.product');
+        client.release();
+    } catch (error) {
+        console.error('Error executing query', error);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    }
+
     return NextResponse.json({ product: products.rows }, { status: 200 });
 }

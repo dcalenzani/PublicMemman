@@ -1,5 +1,12 @@
-import { sql } from '@vercel/postgres';
+import { Pool } from 'pg';
 import { NextResponse } from 'next/server';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+});
 
 export async function DELETE(request: Request) {
     try {
@@ -10,9 +17,13 @@ export async function DELETE(request: Request) {
             throw new Error('ID is required');
         }
 
-        await sql`
-            DELETE FROM climbing_gym.special_event
-            WHERE id = ${id}`;
+        const client = await pool.connect();
+        await client.query('BEGIN');
+
+        await client.query('DELETE FROM climbing_gym.special_event WHERE id = $1', [id]);
+
+        await client.query('COMMIT');
+        client.release();
 
         return NextResponse.json({ message: 'Delete successful' }, { status: 200 });
     } catch (error) {

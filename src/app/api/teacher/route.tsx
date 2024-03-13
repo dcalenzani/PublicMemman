@@ -1,6 +1,13 @@
-import { sql } from '@vercel/postgres';
+import { Pool } from 'pg';
 import { NextResponse } from 'next/server';
- 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
@@ -8,7 +15,7 @@ export async function GET(request: Request) {
     let teachers;
 
     if (id) {
-      teachers = await sql`
+      teachers = await pool.query(`
         SELECT 
           users.id as DNI,
           CONCAT(users.firstname, ' ', users.lastname) as Nombre,
@@ -22,10 +29,10 @@ export async function GET(request: Request) {
             ON worker.users_id = users.id 
           LEFT JOIN climbing_gym.payment_method
             ON worker.payment_method = payment_method.id
-        WHERE users_id = ${id};
-      `;
+        WHERE users_id = $1;
+      `, [id]);
     } else {
-      teachers = await sql`
+      teachers = await pool.query(`
         SELECT 
           users.id as DNI,
           CONCAT(users.firstname, ' ', users.lastname) as Nombre,
@@ -38,7 +45,7 @@ export async function GET(request: Request) {
             ON worker.users_id = users.id 
           LEFT JOIN climbing_gym.payment_method
             ON worker.payment_method = payment_method.id;
-      `;
+      `);
     }
     return NextResponse.json({ teachers: teachers.rows }, { status: 200 });
   } catch (error) {
